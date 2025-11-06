@@ -1,0 +1,75 @@
+
+[
+  {
+    "skillId": 1,
+    "skillName": "Beginner Guitar Lessons",
+    "providerName": "Alex Martin",
+    "providerEmail": "alex@skillswap.com",
+    "price": 20,
+    "rating": 4.8,
+    "slotsAvailable": 3,
+    "description": "We offer fun acoustic guitar classes for complete beginners worldwide.",
+    "image": "https://i.ibb.co.com/vCSzxZxR/guiter.jpg",
+    "category": "Music"
+  },
+  {
+    "skillId": 2,
+    "skillName": "Spoken English Practice",
+    "providerName": "Sara Hossain",
+    "providerEmail": "sara@skillswap.com",
+    "price": 10,
+    "rating": 4.6,
+    "slotsAvailable": 5,
+    "description": "Conversational English sessions for non-native speakers.",
+    "image": "https://i.ibb.co.com/MDGwX1RV/spoken-english.jpg",
+    "category": "Language"
+  },
+  {
+    "skillId": 3,
+    "skillName": "Full-Stack Web Development",
+    "providerName": "Rehan Ahmed",
+    "providerEmail": "rehan@skillswap.com",
+    "price": 45,
+    "rating": 4.9,
+    "slotsAvailable": 2,
+    "description": "Learn to build responsive websites using React, Node.js, and MongoDB from scratch.",
+    "image": "https://i.ibb.co.com/yFSd9nhf/full-stack.jpg",
+    "category": "Programming"
+  },
+  {
+    "skillId": 4,
+    "skillName": "Data Analysis with Python",
+    "providerName": "Lina Chowdhury",
+    "providerEmail": "lina@skillswap.com",
+    "price": 35,
+    "rating": 4.7,
+    "slotsAvailable": 4,
+    "description": "Analyze real-world datasets using Pandas, NumPy, and Matplotlib for data insights.",
+    "image": "https://i.ibb.co.com/7NYbvdNr/data-analysis.jpg",
+    "category": "Data Science"
+  },
+  {
+    "skillId": 5,
+    "skillName": "UI/UX Design Masterclass",
+    "providerName": "Rafiul Karim",
+    "providerEmail": "rafiul@skillswap.com",
+    "price": 40,
+    "rating": 4.9,
+    "slotsAvailable": 3,
+    "description": "Master Figma, user research, and wireframing to design modern user interfaces.",
+    "image": "https://i.ibb.co.com/35pg6R6d/uiux.jpg",
+    "category": "Design"
+  },
+  {
+    "skillId": 6,
+    "skillName": "Machine Learning for Beginners",
+    "providerName": "Nabila Rahman",
+    "providerEmail": "nabila@skillswap.com",
+    "price": 50,
+    "rating": 4.8,
+    "slotsAvailable": 2,
+    "description": "Hands-on introduction to supervised and unsupervised learning using Scikit-Learn.",
+    "image": "https://i.ibb.co.com/chnP6tSM/machine-learning-for-beginners.jpg",
+    "category": "Artificial Intelligence"
+  }
+]
