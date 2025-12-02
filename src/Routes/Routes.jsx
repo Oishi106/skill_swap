@@ -9,6 +9,10 @@ import Privateroute from "../Privateroute/Privateroute";
 import Toprated from "../Pages/Toprated";
 import Howitworks from "../Pages/Howitworks";
 import Testimonials from "../Pages/Testimonials ";
+import AllSkills from "../Pages/AllSkills";
+import Aboutus from "../Pages/Aboutus";
+import Contract from "../Pages/Contract";
+import Support from "../Pages/Support";
 
 export const router=createBrowserRouter([
     {
@@ -42,6 +46,22 @@ export const router=createBrowserRouter([
             {
                 path:'howworks',
                 element:<Howitworks></Howitworks>
+            },
+            {
+                path:'all-skills',
+                element:<Privateroute><AllSkills></AllSkills></Privateroute>
+            },
+            {
+                path:'about-us',
+                element:<Privateroute><Aboutus></Aboutus></Privateroute>
+            },
+            {
+                path:'contract',
+                element:<Privateroute><Contract></Contract></Privateroute>
+            },
+            {
+                path:'support',
+                element:<Privateroute><Support></Support></Privateroute>
             },
             {
                 path:'Testimonials',

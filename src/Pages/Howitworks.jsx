@@ -22,7 +22,7 @@ const Howitworks = () => {
     <main className="min-h-screen">
       <Mycontainer>
         <div className="text-center my-8 md:my-12 space-y-3">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold bg-gradient-to-r from-[#F4991A] to-teal-500 bg-clip-text text-transparent">
             How It Works
           </h1>
           <p className="text-base text-gray-600">
