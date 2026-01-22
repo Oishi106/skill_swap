@@ -88,8 +88,8 @@ const Profile = () => {
                   />
                 </label>
 
-                <label className="form-control w-full">
-                  <span className="label-text text-white/80">Photo URL</span>
+                <label className="form-control  w-full">
+                  <span className="label-text  text-white/80">Photo URL</span>
                   <input
                     type="text"
                     className="input input-bordered w-full bg-white/20 placeholder-white/60 text-white"
@@ -101,7 +101,7 @@ const Profile = () => {
 
                 <button
                   type="submit"
-                  className={`btn btn-primary w-full mt-3 ${
+                  className={`mt-4 w-full bg-gradient-to-r from-[#1B3C53] to-[#234C6A] hover:bg-[#1B3C53]  text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200${
                     saving ? "btn-disabled" : ""
                   }`}
                 >

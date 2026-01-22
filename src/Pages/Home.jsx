@@ -1,38 +1,48 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
-// Animation variants for scroll-triggered entrance
-const leftVariant = {
-  hidden: { opacity: 0, x: -80 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.8 } },
-};
-const rightVariant = {
-  hidden: { opacity: 0, x: 80 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.8 } },
-};
-const titleAnim = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.7 } },
-};
+import { FaExchangeAlt, FaShieldAlt, FaLock, FaMobileAlt, FaUserPlus, FaListAlt, FaCalendarCheck, FaGraduationCap, FaUsers, FaHandshake, FaHeart, FaMapMarkerAlt, FaFireAlt, FaUserShield, FaChevronDown, FaChevronUp, FaCode, FaMusic, FaLanguage, FaDumbbell } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Mycontainer from "../components/Mycontainer";
 import useData from "../hooks/useData";
 import Skillcard from "../components/Skillcard";
 import { DotLoader } from "react-spinners";
-// for swiper
-// import Swiper core and required modules
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import Mylink from "../components/Mylink";
+import { Link } from "react-router";
+
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+};
+
+const fadeInLeft = {
+  hidden: { opacity: 0, x: -50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6 } }
+};
+
+const fadeInRight = {
+  hidden: { opacity: 0, x: 50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6 } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
 
 const Home = () => {
   const { skill, loading } = useData();
+  const [openFaq, setOpenFaq] = useState(null);
 
   useEffect(() => {
     AOS.init({
@@ -43,112 +53,97 @@ const Home = () => {
     });
   }, []);
 
+  const toggleFaq = (index) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
+
+  // FAQ Data
+  const faqData = [
+    {
+      question: "How does SkillSwap work?",
+      answer: "SkillSwap connects people who want to learn new skills with those who can teach them. Simply create an account, list skills you can offer or want to learn, browse available sessions, and book with confidence. It's a peer-to-peer exchange that benefits everyone."
+    },
+    {
+      question: "Is my account information secure?",
+      answer: "Absolutely! We use Firebase Authentication, an industry-standard security system by Google. Your personal data is encrypted, and we never share your information with third parties. Your privacy is our priority."
+    },
+    {
+      question: "Do I need to pay to use SkillSwap?",
+      answer: "SkillSwap is free to join and browse. Individual skill providers may set their own rates for sessions, or you can arrange skill exchanges where both parties teach each other something new."
+    },
+    {
+      question: "How do bookings work?",
+      answer: "Once you find a skill you want to learn, simply click to view details and book a session. Our protected booking system ensures only verified users can access sessions, and you'll receive confirmation once your booking is confirmed."
+    }
+  ];
+
   return (
-    <div className="">
-      <main className="min-h-screen ">
-        {/* 1. Hero Section (Swiper) - already present, add framer-motion */}
+    <div className="bg-gradient-to-b from-white to-[#E3E3E3]">
+      <main className="min-h-screen">
+        
+        {/* Hero Section (Swiper) */}
         <motion.div
-          variants={leftVariant}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
         >
           <Swiper
-            // install Swiper modules
             modules={[Navigation, Pagination, Scrollbar, A11y]}
-            spaceBetween={50}
+            spaceBetween={0}
             slidesPerView={1}
             navigation
             pagination={{ clickable: true }}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log("slide change")}
           >
             <SwiperSlide>
-              <div className="relative">
+              <div className="relative h-[400px] md:h-[500px]">
                 <img
-                  src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1332"
-                  alt=""
-                  className="w-full h-full object-cover brightness-75 contrast-125 rounded-lg"
+                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+                  alt="Skill Exchange"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-black/50 rounded-lg" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
-                  <h2 className="text-3xl sm:text-4xl font-bold drop-shadow-lg">
-                    “Practice English Daily”
+                <div className="absolute inset-0 bg-gradient-to-r from-[#1B3C53]/90 to-[#234C6A]/70" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
+                  <h2 className="text-3xl sm:text-5xl font-bold mb-4">
+                    Share Skills, Grow Together
                   </h2>
-                  <p className="mt-2 text-lg opacity-90">
-                    Every expert was once a beginner.
+                  <p className="text-lg md:text-xl text-white/90 max-w-2xl">
+                    Connect with your community and exchange knowledge through meaningful skill sharing
                   </p>
                 </div>
               </div>
             </SwiperSlide>
             <SwiperSlide>
-              <div className="relative">
+              <div className="relative h-[400px] md:h-[500px]">
                 <img
-                  src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1171"
-                  alt=""
-                  className="w-full h-full object-cover brightness-75 contrast-125 rounded-lg"
+                  src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+                  alt="Learning Together"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-black/50 rounded-lg" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
-                  <h2 className="text-3xl sm:text-4xl font-bold drop-shadow-lg">
-                    “Keep Learning, Keep Growing”
+                <div className="absolute inset-0 bg-gradient-to-r from-[#1B3C53]/90 to-[#456882]/70" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
+                  <h2 className="text-3xl sm:text-5xl font-bold mb-4">
+                    Learn From Local Experts
                   </h2>
-                  <p className="mt-2 text-lg opacity-90">
-                    Consistency beats talent every time.
+                  <p className="text-lg md:text-xl text-white/90 max-w-2xl">
+                    Discover talented individuals in your area ready to share their expertise
                   </p>
                 </div>
               </div>
             </SwiperSlide>
             <SwiperSlide>
-              <div className="relative">
+              <div className="relative h-[400px] md:h-[500px]">
                 <img
-                  src="https://plus.unsplash.com/premium_photo-1685086785054-d047cdc0e525?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1332"
-                  alt=""
-                  className="w-full h-full object-cover brightness-75 contrast-125 rounded-lg"
+                  src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+                  alt="Teach and Learn"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-black/50 rounded-lg" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
-                  <h2 className="text-3xl sm:text-4xl font-bold drop-shadow-lg">
-                    “Dream Big, Work Hard”
+                <div className="absolute inset-0 bg-gradient-to-r from-[#234C6A]/90 to-[#1B3C53]/70" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
+                  <h2 className="text-3xl sm:text-5xl font-bold mb-4">
+                    Teach What You Love
                   </h2>
-                  <p className="mt-2 text-lg opacity-90">
-                    Small steps lead to great distances.
-                  </p>
-                </div>
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="relative">
-                <img
-                  src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1332"
-                  alt=""
-                  className="w-full h-full object-cover brightness-75 contrast-125 rounded-lg"
-                />
-                <div className="absolute inset-0 bg-black/50 rounded-lg" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
-                  <h2 className="text-3xl sm:text-4xl font-bold drop-shadow-lg">
-                    “Turn Effort Into Achievement”
-                  </h2>
-                  <p className="mt-2 text-lg opacity-90">
-                    The harder you work, the luckier you get.
-                  </p>
-                </div>
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="relative">
-                <img
-                  src="https://plus.unsplash.com/premium_photo-1664194584446-6d35dc1b3760?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1237"
-                  alt=""
-                  className="w-full h-full object-cover brightness-75 contrast-125 rounded-lg"
-                />
-                <div className="absolute inset-0 bg-black/50 rounded-lg" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
-                  <h2 className="text-3xl sm:text-4xl font-bold drop-shadow-lg">
-                    “Make Today Count”
-                  </h2>
-                  <p className="mt-2 text-lg opacity-90">
-                    Don’t wish for it — work for it.
+                  <p className="text-lg md:text-xl text-white/90 max-w-2xl">
+                    Share your passion and make a difference in someone's learning journey
                   </p>
                 </div>
               </div>
@@ -157,379 +152,539 @@ const Home = () => {
         </motion.div>
 
         <Mycontainer>
-          {/* 2. Features/Benefits Section */}
-          <motion.section
-            variants={rightVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
-            className="my-16"
-          >
-            <motion.h2
-              variants={titleAnim}
+          
+          {/* 1. Key Features Section */}
+          <section className="py-16 md:py-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <span className="inline-block bg-[#1B3C53]/10 text-[#1B3C53] text-sm font-semibold px-4 py-2 rounded-full mb-4">
+                ✨ Why Choose Us
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1B3C53] mb-4">
+               <span className="text-[#BF124D]">Why Skill</span>  Exchange?
+              </h2>
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                A modern platform built for meaningful skill exchange
+              </p>
+            </motion.div>
+
+            <motion.div 
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+              variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false }}
-              className="text-[40px] md:text-4xl font-extrabold text-center mb-4 bg-linear-to-r from-[#CF4B00] to-[#F4991A]  bg-clip-text text-transparent tracking-wide drop-shadow-lg"
+              viewport={{ once: true }}
             >
-              Why Choose Us?
-            </motion.h2>
-            <div className="flex flex-col items-center mb-6">
-              <p className="text-lg text-gray-600 max-w-xl text-center">
-                Unlock your potential with our curated platform, designed for
-                growth and excellence.
-              </p>
-              <img
-                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80"
-                alt="Benefits"
-                className="mt-4 rounded-xl shadow-lg w-40 h-28 object-cover"
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
               {[
                 {
-                  title: "Verified Experts",
-                  desc: "All providers are vetted for quality.",
-                  img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+                  icon: FaExchangeAlt,
+                  title: "Skill Exchange Marketplace",
+                  desc: "Connect with others to share and learn new skills in your local community",
+                  gradient: "from-[#1B3C53] to-[#234C6A]",
+                  bgColor: "bg-[#1B3C53]/5",
+                  borderColor: "border-[#1B3C53]/20"
                 },
                 {
-                  title: "Flexible Learning",
-                  desc: "Learn at your own pace, anytime.",
-                  img: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=400&q=80",
+                  icon: FaShieldAlt,
+                  title: "Secure Firebase Auth",
+                  desc: "Your account is protected with industry-standard Firebase Authentication",
+                  gradient: "from-[#234C6A] to-[#456882]",
+                  bgColor: "bg-[#234C6A]/5",
+                  borderColor: "border-[#234C6A]/20"
                 },
                 {
-                  title: "Community Support",
-                  desc: "Get help from a vibrant community.",
-                  img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+                  icon: FaLock,
+                  title: "Protected Booking",
+                  desc: "Private routes ensure only verified users can access booking features",
+                  gradient: "from-[#456882] to-[#1B3C53]",
+                  bgColor: "bg-[#456882]/5",
+                  borderColor: "border-[#456882]/20"
                 },
-              ].map((f, i) => (
+                {
+                  icon: FaMobileAlt,
+                  title: "Responsive & Minimal UI",
+                  desc: "Clean, modern design that works beautifully on any device",
+                  gradient: "from-[#1B3C53] to-[#456882]",
+                  bgColor: "bg-[#1B3C53]/5",
+                  borderColor: "border-[#1B3C53]/20"
+                }
+              ].map((feature, index) => (
                 <motion.div
-                  key={f.title}
-                  variants={i % 2 === 0 ? leftVariant : rightVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: false, amount: 0.3 }}
-                  whileHover={{ scale: 1.07 }}
-                  className="rounded-xl p-6 shadow-xl bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 border border-blue-200 flex flex-col items-center"
+                  key={index}
+                  variants={fadeInUp}
+                  className={`${feature.bgColor} rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border ${feature.borderColor} group hover:-translate-y-1`}
                 >
-                  <img
-                    src={f.img}
-                    alt={f.title}
-                    className="w-20 h-20 rounded-full mb-3 shadow-md object-cover"
-                  />
-                  <h3 className="font-semibold text-lg mb-2 text-blue-600 animate-pulse">
-                    {f.title}
-                  </h3>
-                  <p className="text-gray-700 text-center">{f.desc}</p>
+                  <div className={`bg-gradient-to-br ${feature.gradient} w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-md`}>
+                    <feature.icon className="text-white text-xl" />
+                  </div>
+                  <h3 className="text-lg font-bold text-[#1B3C53] mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{feature.desc}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </section>
+
+          {/* 2. How It Works Section */}
+          <section className="py-16 md:py-20  bg-white rounded-3xl shadow-sm -mx-4 px-4 md:-mx-8 md:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1B3C53] mb-4">
+                How <span className="text-[#BF124D]">It Works</span> 
+              </h2>
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                Get started in four simple steps
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                {
+                  icon: FaUserPlus,
+                  step: "01",
+                  title: "Sign Up Securely",
+                  desc: "Create your free account with secure Firebase authentication"
+                },
+                {
+                  icon: FaListAlt,
+                  step: "02",
+                  title: "Browse or List Skills",
+                  desc: "Share what you can teach or find skills you want to learn"
+                },
+                {
+                  icon: FaCalendarCheck,
+                  step: "03",
+                  title: "Book with Confidence",
+                  desc: "Schedule sessions through our protected booking system"
+                },
+                {
+                  icon: FaGraduationCap,
+                  step: "04",
+                  title: "Learn & Grow",
+                  desc: "Connect, learn, teach, and grow together as a community"
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="text-center relative"
+                >
+                  <div className="bg-gradient-to-br from-[#1B3C53] to-[#234C6A] w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <item.icon className="text-white text-3xl" />
+                  </div>
+                  <span className="absolute top-0 right-1/2 transform translate-x-14 -translate-y-2 bg-[#BF124D] text-white text-xs font-bold px-2 py-1 rounded-full">
+                    {item.step}
+                  </span>
+                  <h3 className="text-xl font-bold text-[#1B3C53] mb-2">{item.title}</h3>
+                  <p className="text-gray-600 text-sm">{item.desc}</p>
                 </motion.div>
               ))}
             </div>
-          </motion.section>
+          </section>
+        </Mycontainer>
 
-          {/* 3. Top Categories Section */}
-          <motion.section
-            variants={leftVariant}
-            initial="hidden" 
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
-            className="my-16"
-          >
-            <motion.h2
-              variants={titleAnim}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false }}
-              className="text-3xl md:text-4xl font-extrabold text-center mb-4 bg-gradient-to-r from-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent tracking-wide drop-shadow-lg"
+        {/* 3. Popular/Featured Skills Section - Full Width */}
+        <section className="py-16 md:py-20 bg-gradient-to-br from-[#1B3C53] via-[#234C6A] to-[#456882]">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
             >
-              Top Skill Categories
-            </motion.h2>
-            <div className="flex flex-col items-center mb-6">
-              <p className="text-lg text-gray-600 max-w-xl text-center">
-                Explore trending categories and find your passion.
+              <span className="inline-block bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-full mb-4">
+                🔥 Trending Now
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Popular Skills
+              </h2>
+              <p className="text-white/80 text-lg max-w-2xl mx-auto">
+                Explore trending skill categories in our community
               </p>
-              <img
-                src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80"
-                alt="Categories"
-                className="mt-4 rounded-xl shadow-lg w-40 h-28 object-cover"
-              />
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 justify-center">
-              {["Programming", "Design", "Marketing", "Languages"].map(
-                (cat, i) => (
-                  <motion.div
-                    key={cat}
-                    variants={i % 2 === 0 ? leftVariant : rightVariant}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: false, amount: 0.3 }}
-                    whileHover={{ scale: 1.13, rotate: 2 }}
-                    className="rounded-xl p-5 shadow-xl bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 border border-green-200 text-center font-semibold text-lg text-green-700"
-                  >
-                    {cat}
-                  </motion.div>
-                )
-              )}
-            </div>
-          </motion.section>
+            </motion.div>
 
-          {/* 4. How It Works Section */}
-          <motion.section
-            variants={rightVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
-            className="my-16"
-          >
-            <motion.h2
-              variants={titleAnim}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false }}
-              className=" text-3xl md:text-4xl font-extrabold text-center mb-4 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 bg-clip-text text-transparent tracking-wide drop-shadow-lg"
-            >
-              How It Works
-            </motion.h2>
-            <div className="flex flex-col items-center mb-6">
-              <p className="text-lg text-gray-600 max-w-xl text-center">
-                Get started in three simple steps and begin your learning
-                journey.
-              </p>
-              <img
-                src="https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=400&q=80"
-                alt="How it works"
-                className="mt-4 rounded-xl shadow-lg w-40 h-28 object-cover"
-              />
-            </div>
-            <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
               {[
                 {
-                  step: "Sign Up",
-                  desc: "Create your free account.",
-                  img: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80",
+                  icon: FaCode,
+                  name: "Coding",
+                  tagline: "Web, Mobile & Software Development",
+                  iconBg: "bg-gradient-to-br from-blue-500 to-blue-700",
+                  accent: "text-blue-400"
                 },
                 {
-                  step: "Browse Skills",
-                  desc: "Find the skill you want to learn.",
-                  img: "https://images.unsplash.com/photo-1465101178521-c1a4c8a0f8f9?auto=format&fit=crop&w=400&q=80",
+                  icon: FaMusic,
+                  name: "Music",
+                  tagline: "Instruments, Vocals & Production",
+                  iconBg: "bg-gradient-to-br from-purple-500 to-purple-700",
+                  accent: "text-purple-400"
                 },
                 {
-                  step: "Connect",
-                  desc: "Message providers and start learning.",
-                  img: "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=400&q=80",
+                  icon: FaLanguage,
+                  name: "Languages",
+                  tagline: "Learn Any Language from Natives",
+                  iconBg: "bg-gradient-to-br from-emerald-500 to-emerald-700",
+                  accent: "text-emerald-400"
                 },
-              ].map((s, i) => (
+                {
+                  icon: FaDumbbell,
+                  name: "Fitness",
+                  tagline: "Training, Yoga & Wellness",
+                  iconBg: "bg-gradient-to-br from-orange-500 to-red-600",
+                  accent: "text-orange-400"
+                }
+              ].map((skill, index) => (
                 <motion.div
-                  key={s.step}
-                  variants={i % 2 === 0 ? leftVariant : rightVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: false, amount: 0.3 }}
-                  whileHover={{ scale: 1.07 }}
-                  className="rounded-xl p-6 shadow-xl bg-gradient-to-br from-yellow-50 via-orange-50 to-pink-50 border border-yellow-200 w-full md:w-1/3 flex flex-col items-center"
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 group hover:bg-white/20 hover:-translate-y-2 transition-all duration-300"
                 >
-                  <img
-                    src={s.img}
-                    alt={s.step}
-                    className="w-16 h-16 rounded-full mb-3 shadow-md object-cover"
-                  />
-                  <h3 className="font-semibold text-lg mb-2 text-yellow-600 animate-bounce">
-                    {s.step}
-                  </h3>
-                  <p className="text-gray-700 text-center">{s.desc}</p>
+                  <div className={`${skill.iconBg} w-16 h-16 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                    <skill.icon className="text-white text-2xl" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">{skill.name}</h3>
+                  <p className="text-white/70 text-sm mb-4">{skill.tagline}</p>
+                  <div className={`${skill.accent} text-xs font-semibold`}>Learn More →</div>
                 </motion.div>
               ))}
             </div>
-          </motion.section>
 
-          {/* 5. Testimonials Section */}
-          <motion.section
-            variants={leftVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
-            className="my-16"
-          >
-            <motion.h2
-              variants={titleAnim}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false }}
-              className="text-3xl md:text-4xl font-extrabold text-center mb-4 bg-gradient-to-r from-indigo-400 via-blue-400 to-green-400 bg-clip-text text-transparent tracking-wide drop-shadow-lg"
-            >
-              What Our Users Say
-            </motion.h2>
-            <div className="flex flex-col items-center mb-6">
-              <p className="text-lg text-gray-600 max-w-xl text-center">
-                Real stories from our learners and providers.
-              </p>
-              <img
-                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80"
-                alt="Testimonials"
-                className="mt-4 rounded-xl shadow-lg w-40 h-28 object-cover"
-              />
+            <div className="text-center">
+              <Link to="/all-skills">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-[#1B3C53] to-[#234C6A] text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  Explore All Skills
+                </motion.button>
+              </Link>
             </div>
-            <Swiper
-              modules={[Navigation, Pagination]}
-              spaceBetween={30}
-              slidesPerView={1}
-              navigation
-              pagination={{ clickable: true }}
+          </div>
+        </section>
+
+        {/* 4. Why Choose SkillSwap Section - Full Width */}
+        <section className="py-16 md:py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
             >
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#1B3C53]">
+                Why Choose Skill Exchange?
+              </h2>
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                Built with your needs in mind
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
               {[
                 {
-                  name: "Ava",
-                  text: "Amazing platform! I improved my skills quickly.",
-                  img: "https://randomuser.me/api/portraits/women/44.jpg",
+                  icon: FaUsers,
+                  title: "Community-Driven Learning",
+                  desc: "Learn from real people in your community who share your passion"
                 },
                 {
-                  name: "Liam",
-                  text: "Great community and support.",
-                  img: "https://randomuser.me/api/portraits/men/32.jpg",
+                  icon: FaUserShield,
+                  title: "Secure & Private Accounts",
+                  desc: "Your data is protected with industry-leading security measures"
                 },
                 {
-                  name: "Sophia",
-                  text: "Easy to use and very helpful.",
-                  img: "https://randomuser.me/api/portraits/women/65.jpg",
+                  icon: FaHandshake,
+                  title: "Simple Booking Process",
+                  desc: "Intuitive scheduling that makes connecting effortless"
                 },
-              ].map((t, i) => (
-                <SwiperSlide key={t.name}>
-                  <motion.div
-                    variants={i % 2 === 0 ? leftVariant : rightVariant}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: false, amount: 0.3 }}
-                    className="rounded-xl p-8 shadow-2xl bg-gradient-to-br from-indigo-50 via-blue-50 to-green-50 border border-indigo-200 text-center flex flex-col items-center"
-                  >
-                    <img
-                      src={t.img}
-                      alt={t.name}
-                      className="w-16 h-16 rounded-full mb-3 shadow-md object-cover"
-                    />
-                    <p className="text-lg italic text-gray-800">“{t.text}”</p>
-                    <span className="block mt-4 font-semibold text-indigo-600">
-                      - {t.name}
-                    </span>
-                  </motion.div>
-                </SwiperSlide>
+                {
+                  icon: FaMapMarkerAlt,
+                  title: "Meaningful Local Connections",
+                  desc: "Build relationships with skilled individuals in your area"
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-gradient-to-br from-[#E3E3E3] to-white rounded-xl p-6 flex items-start gap-4 hover:shadow-lg transition-all duration-300 border border-gray-100"
+                >
+                  <div className="bg-gradient-to-br from-[#1B3C53] to-[#234C6A] p-3 rounded-lg">
+                    <item.icon className="text-white text-xl" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1 text-[#1B3C53]">{item.title}</h3>
+                    <p className="text-gray-600 text-sm">{item.desc}</p>
+                  </div>
+                </motion.div>
               ))}
-            </Swiper>
-          </motion.section>
+            </div>
+          </div>
+        </section>
 
-          {/* 6. Call to Action Section */}
-          <motion.section
-            variants={rightVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
-            className="my-16 flex flex-col items-center justify-center"
-          >
-            <div className="rounded-2xl px-8 py-10 bg-gradient-to-r from-fuchsia-600 via-blue-600 to-cyan-400 shadow-2xl text-center">
-              <motion.h2
-                variants={titleAnim}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false }}
-                className="text-3xl md:text-4xl font-extrabold text-white mb-4 animate-pulse"
-              >
-                Ready to start learning?
-              </motion.h2>
-              <p className="text-lg text-blue-100 mb-4">
-                Sign up now and unlock a world of opportunities!
+        <Mycontainer>
+
+          {/* 5. Trust & Community Section */}
+          <section className="py-16 md:py-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1B3C53] mb-4">
+                 <span className="text-[#BF124D]">Trust & </span> Community
+              </h2>
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                Safety and reliability at the core of everything we do
               </p>
-              <img
-                src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80"
-                alt="Join Now"
-                className="mx-auto mb-6 rounded-xl shadow-lg w-40 h-28 object-cover"
-              />
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+              {[
+                {
+                  icon: FaFireAlt,
+                  title: "Firebase Security",
+                  desc: "Industry-standard authentication powered by Google's Firebase platform"
+                },
+                {
+                  icon: FaHeart,
+                  title: "Inclusive Community",
+                  desc: "Respectful guidelines ensure a welcoming environment for all learners"
+                },
+                {
+                  icon: FaShieldAlt,
+                  title: "Privacy Protected",
+                  desc: "Your personal information is encrypted and never shared with third parties"
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-white rounded-2xl p-8 shadow-lg text-center border border-gray-100"
+                >
+                  <div className="bg-gradient-to-br from-[#456882]/20 to-[#234C6A]/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <item.icon className="text-[#234C6A] text-2xl" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#1B3C53] mb-2">{item.title}</h3>
+                  <p className="text-gray-600 text-sm">{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-[#E3E3E3] rounded-2xl p-8 grid grid-cols-2 md:grid-cols-4 gap-6"
+            >
+              {[
+                { number: "500+", label: "Skills Shared" },
+                { number: "1,200+", label: "Active Learners" },
+                { number: "300+", label: "Expert Teachers" },
+                { number: "98%", label: "Satisfaction Rate" }
+              ].map((stat, index) => (
+                <div key={index} className="text-center">
+                  <p className="text-3xl md:text-4xl font-bold text-[#1B3C53]">{stat.number}</p>
+                  <p className="text-gray-600 text-sm">{stat.label}</p>
+                </div>
+              ))}
+            </motion.div>
+          </section>
+
+          {/* 6. FAQ Section */}
+          <section className="py-16 md:py-20 bg-white rounded-3xl shadow-sm -mx-4 px-4 md:-mx-8 md:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1B3C53] mb-4">
+                 <span className="text-[#BF124D]">Frequently</span> Asked <span className="text-[#BF124D]">Questions</span>
+              </h2>
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                Quick answers to common questions
+              </p>
+            </motion.div>
+
+            <div className="max-w-3xl mx-auto space-y-4">
+              {faqData.map((faq, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="border border-gray-200 rounded-xl overflow-hidden"
+                >
+                  <button
+                    onClick={() => toggleFaq(index)}
+                    className="w-full px-6 py-4 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
+                  >
+                    <span className="font-semibold text-[#1B3C53] text-left">{faq.question}</span>
+                    {openFaq === index ? (
+                      <FaChevronUp className="text-[#234C6A] flex-shrink-0" />
+                    ) : (
+                      <FaChevronDown className="text-[#234C6A] flex-shrink-0" />
+                    )}
+                  </button>
+                  <motion.div
+                    initial={false}
+                    animate={{
+                      height: openFaq === index ? "auto" : 0,
+                      opacity: openFaq === index ? 1 : 0
+                    }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <p className="px-6 py-4 text-gray-600 bg-white">{faq.answer}</p>
+                  </motion.div>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
+          {/* 7. Call To Action Section */}
+          <section className="py-20 md:py-24">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-gradient-to-r from-[#1B3C53] via-[#234C6A] to-[#456882] rounded-3xl p-8 md:p-16 text-center shadow-2xl"
+            >
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+                Ready to share your skills or learn something new?
+              </h2>
+              <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
+                Join our growing community of learners and teachers today
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/signup">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-gradient-to-r from-[#1B3C53] to-[#234C6A] text-white font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    Get Started
+                  </motion.button>
+                </Link>
+                <Link to="/all-skills">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-white text-[#1B3C53] font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    Browse Skills
+                  </motion.button>
+                </Link>
+              </div>
+            </motion.div>
+          </section>
+
+          {/* Skill Cards Section */}
+          <section className="pb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1B3C53] mb-4">
+                Available Skills
+              </h2>
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                Discover a wide range of skills and connect with top-rated providers
+              </p>
+            </motion.div>
+
+            <div className="flex flex-wrap gap-3 justify-center mb-8">
               <Mylink
-                to="signup"
-                className="btn btn-lg bg-white text-fuchsia-600 font-bold shadow-lg rounded-xl px-6 py-3 hover:bg-fuchsia-100 transition-all"
+                to="toprated"
+                className="bg-[#1B3C53] text-white px-6 py-3 rounded-xl hover:bg-[#234C6A] transition-colors"
               >
-                Join Now
+                Top Rated Providers
+              </Mylink>
+              <Mylink
+                to="howworks"
+                className="bg-[#234C6A] text-white px-6 py-3 rounded-xl hover:bg-[#1B3C53] transition-colors"
+              >
+                How It Works
+              </Mylink>
+              <Mylink
+                to="testimonials"
+                className="bg-[#456882] text-white px-6 py-3 rounded-xl hover:bg-[#234C6A] transition-colors"
+              >
+                Testimonials
               </Mylink>
             </div>
-          </motion.section>
 
-          {/* 7. Skill Cards Section (already present, add framer-motion) */}
-          <motion.div
-            variants={leftVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
-          >
-            <div className="text-center my-8 md:my-12 space-y-3">
-              <motion.h1
-                variants={titleAnim}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false }}
-                className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-500 bg-clip-text text-transparent tracking-wide drop-shadow-lg animate-bounce"
-              >
-                Skills that you can use from here
-              </motion.h1>
-              <p className="text-lg text-gray-600 max-w-xl mx-auto">
-                Discover a wide range of skills and connect with top-rated
-                providers.
-              </p>
-              <img
-                src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=400&q=80"
-                alt="Skills"
-                className="mx-auto mt-4 rounded-xl shadow-lg w-40 h-28 object-cover"
-              />
-              <div className="mx-auto w-20 sm:w-24 h-1 bg-gradient-to-r from-sky-500 to-indigo-500 rounded-full" />
-            </div>
-
-            {/* Content */}
             {loading ? (
               <div className="py-20 flex items-center justify-center">
-                <DotLoader size={100} />
+                <DotLoader size={60} color="#234C6A" />
               </div>
             ) : (
-              <div>
+              <>
                 <motion.div
-                  variants={rightVariant}
+                  variants={staggerContainer}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: false, amount: 0.3 }}
-                  className="mt-4 flex flex-col sm:flex-row gap-3 justify-center mb-4"
+                  viewport={{ once: true }}
+                  className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
                 >
-                  <Mylink
-                    to="toprated"
-                    className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl shadow-sm rounded-xl p-4 border border-gray-100 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-white font-bold"
-                  >
-                    Top Rated Providers
-                  </Mylink>
-                  <Mylink
-                    to="howworks"
-                    className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl shadow-sm rounded-xl p-4 border border-gray-100 bg-gradient-to-r from-green-400 via-blue-400 to-purple-400 text- from-[#CF4B00] to-[#F4991A]  font-bold"
-                  >
-                    How It Works
-                  </Mylink>
-                  <Mylink
-                    to="testimonials"
-                    className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl shadow-sm rounded-xl p-4 border border-gray-100 bg-gradient-to-r from-indigo-400 via-blue-400 to-green-400 text-white font-bold"
-                  >
-                    Testimonials
-                  </Mylink>
-                </motion.div>
-
-                <section className="grid grid-cols-1 gap-5 lg:grid-cols-3 md:grid-cols-2 md:gap-8 pb-12">
-                  {skill.map((s, idx) => (
+                  {skill.slice(0, 6).map((s, idx) => (
                     <motion.div
                       key={s.skillId}
-                      variants={idx % 2 === 0 ? leftVariant : rightVariant}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: false, amount: 0.3 }}
-                      transition={{ delay: idx * 0.05 }}
+                      variants={fadeInUp}
                     >
                       <Skillcard skill={s} />
                     </motion.div>
                   ))}
-                </section>
-              </div>
+                </motion.div>
+
+                <div className="text-center mt-12">
+                  <Link to="/all-skills">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="bg-gradient-to-r from-[#1B3C53] to-[#234C6A] text-white font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                    >
+                      View All Skills
+                    </motion.button>
+                  </Link>
+                </div>
+              </>
             )}
-          </motion.div>
+          </section>
+
         </Mycontainer>
       </main>
     </div>

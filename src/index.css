@@ -1,6 +1,37 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+/* Custom SkillSwap Color Palette */
+:root {
+  --color-primary-dark: #1B3C53;
+  --color-primary-medium: #234C6A;
+  --color-primary-light: #456882;
+  --color-neutral-light: #E3E3E3;
+}
+
+/* Custom Utility Classes */
+.bg-primary-dark { background-color: #1B3C53; }
+.bg-primary-medium { background-color: #234C6A; }
+.bg-primary-light { background-color: #456882; }
+.bg-neutral-light { background-color: #E3E3E3; }
+
+.text-primary-dark { color: #1B3C53; }
+.text-primary-medium { color: #234C6A; }
+.text-primary-light { color: #456882; }
+.text-neutral-light { color: #E3E3E3; }
+
+.border-primary-dark { border-color: #1B3C53; }
+.border-primary-medium { border-color: #234C6A; }
+.border-primary-light { border-color: #456882; }
+.border-neutral-light { border-color: #E3E3E3; }
+
+.hover\:bg-primary-dark:hover { background-color: #1B3C53; }
+.hover\:bg-primary-medium:hover { background-color: #234C6A; }
+.hover\:bg-primary-light:hover { background-color: #456882; }
+
+.hover\:text-primary-dark:hover { color: #1B3C53; }
+.hover\:text-primary-medium:hover { color: #234C6A; }
+.hover\:text-primary-light:hover { color: #456882; }
 
 .tt{
   font-family: "Open Sans", sans-serif;

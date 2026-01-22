@@ -1,4 +1,3 @@
-
 [
   {
     "skillId": 1,
@@ -9,7 +8,7 @@
     "rating": 4.8,
     "slotsAvailable": 3,
     "description": "We offer fun acoustic guitar classes for complete beginners worldwide.",
-    "image": "https://i.ibb.co.com/vCSzxZxR/guiter.jpg",
+    "image": "https://i.ibb.co.com/6cCchqrW/Beginner-Guitar-Lessons.jpg",
     "category": "Music"
   },
   {
@@ -21,7 +20,7 @@
     "rating": 4.6,
     "slotsAvailable": 5,
     "description": "Conversational English sessions for non-native speakers.",
-    "image": "https://i.ibb.co.com/MDGwX1RV/spoken-english.jpg",
+    "image": "https://i.ibb.co.com/4g9WFH39/Spoken-English-Practice.avif",
     "category": "Language"
   },
   {
@@ -33,7 +32,7 @@
     "rating": 4.9,
     "slotsAvailable": 2,
     "description": "Learn to build responsive websites using React, Node.js, and MongoDB from scratch.",
-    "image": "https://i.ibb.co.com/yFSd9nhf/full-stack.jpg",
+    "image": "https://i.ibb.co.com/w97mvLy/Full-Stack-Web-Development.avif",
     "category": "Programming"
   },
   {
@@ -57,7 +56,7 @@
     "rating": 4.9,
     "slotsAvailable": 3,
     "description": "Master Figma, user research, and wireframing to design modern user interfaces.",
-    "image": "https://i.ibb.co.com/35pg6R6d/uiux.jpg",
+    "image": "https://i.ibb.co.com/jPYwzYqv/UI-UX-Design-Masterclass.avif",
     "category": "Design"
   },
   {
@@ -69,7 +68,79 @@
     "rating": 4.8,
     "slotsAvailable": 2,
     "description": "Hands-on introduction to supervised and unsupervised learning using Scikit-Learn.",
-    "image": "https://i.ibb.co.com/chnP6tSM/machine-learning-for-beginners.jpg",
+    "image": "https://i.ibb.co.com/PzbB07zc/Machine-Learning-for-Beginnerss.avif",
     "category": "Artificial Intelligence"
+  },
+  {
+    "skillId": 7,
+    "skillName": "Basic Piano Lessons",
+    "providerName": "Daniel Lee",
+    "providerEmail": "daniel@skillswap.com",
+    "price": 25,
+    "rating": 4.5,
+    "slotsAvailable": 4,
+    "description": "Learn piano fundamentals including chords and basic music theory.",
+    "image": "https://i.ibb.co.com/LXc0FR0n/Basic-Piano-Lessons.avif",
+    "category": "Music"
+  },
+  {
+    "skillId": 8,
+    "skillName": "Public Speaking Coaching",
+    "providerName": "Tahmina Akter",
+    "providerEmail": "tahmina@skillswap.com",
+    "price": 30,
+    "rating": 4.7,
+    "slotsAvailable": 3,
+    "description": "Improve confidence and communication skills for presentations.",
+    "image": "https://i.ibb.co.com/Z6KrcP8r/Public-Speaking-Coaching.avif",
+    "category": "Communication"
+  },
+  {
+    "skillId": 9,
+    "skillName": "Frontend Development with React",
+    "providerName": "Imran Khan",
+    "providerEmail": "imran@skillswap.com",
+    "price": 40,
+    "rating": 4.8,
+    "slotsAvailable": 2,
+    "description": "Build modern frontend applications using React and Tailwind CSS.",
+    "image": "https://i.ibb.co.com/ynh1gzQq/Frontend-Development-with-React.avif",
+    "category": "Programming"
+  },
+  {
+    "skillId": 10,
+    "skillName": "Basic Photography",
+    "providerName": "Nusrat Jahan",
+    "providerEmail": "nusrat@skillswap.com",
+    "price": 20,
+    "rating": 4.4,
+    "slotsAvailable": 5,
+    "description": "Learn camera settings, framing, and lighting basics.",
+    "image": "https://i.ibb.co.com/xt0MMJH4/Basic-Photography.avif",
+    "category": "Creative"
+  },
+  {
+    "skillId": 11,
+    "skillName": "Digital Marketing Essentials",
+    "providerName": "Fahim Rahman",
+    "providerEmail": "fahim@skillswap.com",
+    "price": 30,
+    "rating": 4.6,
+    "slotsAvailable": 4,
+    "description": "Introduction to SEO, social media marketing, and online advertising.",
+    "image": "https://i.ibb.co.com/hF9DwfB7/Digital-Marketing-Essentials.avif",
+    "category": "Marketing"
+  },
+  {
+    "skillId": 12,
+    "skillName": "Yoga for Beginners",
+    "providerName": "Anika Sultana",
+    "providerEmail": "anika@skillswap.com",
+    "price": 15,
+    "rating": 4.5,
+    "slotsAvailable": 6,
+    "description": "Beginner-friendly yoga sessions focused on flexibility and mindfulness.",
+    "image": "https://i.ibb.co.com/6RLnv3nv/Yoga-for-Beginners.avif",
+    "category": "Fitness"
   }
 ]

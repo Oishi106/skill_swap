@@ -27,18 +27,17 @@ const Navbar = () => {
 
   const menuItems = (
     <>
-      <li> <Mylink to="/" className="p-2 text-[#007E6E] rounded-xl ">Home</Mylink></li>
-      <li> <Mylink to="/profile" className="p-2 text-[#007E6E] rounded-xl">My Profile</Mylink></li>
-      <li> <Mylink to="/all-skills" className="p-2 text-[#007E6E] rounded-xl">All Skills</Mylink></li>
-      <li> <Mylink to="/about-us" className="p-2 text-[#007E6E] rounded-xl">About Us</Mylink></li>
-      <li> <Mylink to="/contract" className="p-2 text-[#007E6E] rounded-xl">Contact</Mylink></li>
-      <li> <Mylink to="/support" className="p-2 text-[#007E6E] rounded-xl">Support</Mylink></li>
+      <li> <Mylink to="/" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">Home</Mylink></li>
+      <li> <Mylink to="/profile" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">My Profile</Mylink></li>
+      <li> <Mylink to="/all-skills" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">All Skills</Mylink></li>
+      <li> <Mylink to="/about-us" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">About Us</Mylink></li>
+      <li> <Mylink to="/contract" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">Contact</Mylink></li>
     </>
   );
 
   return (
     
-      <div className="navbar bg-base-100  shadow-sm shadow-gray-500 container mx-auto sticky bg-fixed top-0 z-50">
+      <div className="navbar bg-white shadow-md shadow-gray-200 w-full sticky top-0 z-50 px-4 md:px-8 lg:px-16">
 
 
         <div className="navbar-start">
@@ -46,11 +45,11 @@ const Navbar = () => {
 
           <div className="dropdown">
             <div className="flex justify-center items-center">
-              <img className="h-15 w-15 mr-2.5" src="/logo.png" alt="" />
-              <h2 className="font-bold text-3xl text-[#007E6E]">Skill Exchange</h2>
+              <img className="h-12 w-12 mr-2" src="/logo.png" alt="" />
+              <h2 className="font-bold text-2xl md:text-3xl text-[#1B3C53]">SkillSwap</h2>
             </div>
             <ul
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-3 w-52 p-2 shadow cursor-pointer"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-3 w-52 p-2 shadow cursor-pointer lg:hidden"
             >
               {menuItems}
             </ul>
@@ -61,18 +60,18 @@ const Navbar = () => {
 
 
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">{menuItems}</ul>
+          <ul className="menu menu-horizontal px-1 gap-1">{menuItems}</ul>
         </div>
 
 
 
         <div className="navbar-end">
           {loading ? (
-            <DotLoader size={24} />
+            <DotLoader size={24} color="#1B3C53" />
           ) : info ? (
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                <div className="w-10 rounded-full" >
+                <div className="w-10 rounded-full ring-2 ring-[#234C6A] ring-offset-2" >
                   <img
                     alt="user avatar"
                     src={info?.photoURL}
@@ -82,15 +81,15 @@ const Navbar = () => {
               </div>
               <ul
                 tabIndex={0}
-                className="mt-3 z-10 p-2 shadow menu menu-sm dropdown-content bg-base-100  w-30 rounded-box"
+                className="mt-3 z-10 p-2 shadow menu menu-sm dropdown-content bg-base-100 w-36 rounded-box"
               >
                 <li>
-                  <button onClick={handleSignOut} className="btn btn-sm mt-1 cursor-pointer text-blue-600">Log Out</button>
+                  <button onClick={handleSignOut} className="btn btn-sm mt-1 cursor-pointer bg-[#BF124D] text-white hover:bg-[#a01040]">Log Out</button>
                 </li>
               </ul>
             </div>
           ) : (
-            <Mylink to="/signin" className="btn">Login</Mylink>
+            <Mylink to="/signin" className="btn bg-[#1B3C53] text-white hover:bg-[#234C6A] border-none px-6">Login</Mylink>
           )}
         </div>
       </div>

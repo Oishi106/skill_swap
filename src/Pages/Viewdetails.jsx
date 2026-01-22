@@ -24,12 +24,12 @@ const Viewdetails = () => {
   return (
     <div>
       <Mycontainer>
-        <div className="card lg:card-side shadow-xl mt-11 bg-[#8FABD4] text-white">
-          <figure className="rounded-xl">
+        <div className="card lg:card-side     shadow-xl mt-11 bg-[#8FABD4] text-white">
+          <figure className="rounded-xl">     
             <img className="w-96 h-96 rounded-xl p-4 object-cover" src={image} alt={skillName} />
           </figure>
-
-          <div className="card-body">
+      
+          <div className="card-body">    
             <h2 className="card-title text-4xl">{skillName}</h2>
             <h1 className="text-orange-500 text-2xl">Rating: {rating}</h1>
             <h1 className="text-sky-600 font-bold text-2xl">Price: ${price}</h1>
@@ -40,7 +40,7 @@ const Viewdetails = () => {
             <p className="text-gray-600 font-semibold text-lg">Provider Email: {providerEmail}</p>
 
             <div className="card-actions justify-end">
-              <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+              <button className="bg-gradient-to-r from-[#1B3C53] to-[#234C6A] text-white font-bold px-10 py-4 rounded-xl text-lg shadow-lg hover:shadow-xl transition-all duration-300" onClick={() => setShowModal(true)}>
                 Book Session
               </button>
             </div>
