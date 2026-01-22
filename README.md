@@ -4,7 +4,7 @@ A responsive skill-sharing web platform where users can offer, learn, and exchan
 
 ### Live URL
 
-- Live Website: https://skill-exchange44455.netlify.app/
+- Live Website: https://mellow-otter-666845.netlify.app/
 
  ## Project Purpose
 
