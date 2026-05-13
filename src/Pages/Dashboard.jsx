@@ -195,9 +195,17 @@ const Dashboard = () => {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
       >
-        <div className="p-7 border-b border-white/10">
+        <Link 
+          to="/"
+          className="flex items-center gap-3 p-7 border-b border-white/10 hover:bg-white/5 transition-all cursor-pointer"
+        >
+          <img 
+            src="/logo.png" 
+            alt="SkillSwap Logo"
+            className="w-19 h-15 object-contain"
+          />
           <h1 className="text-3xl font-black tracking-tight text-cyan-400">SkillSwap</h1>
-        </div>
+        </Link>
 
         <div className="p-8 text-center border-b border-white/5">
           <img
