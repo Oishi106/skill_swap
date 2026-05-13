@@ -163,28 +163,91 @@ const Dashboard = () => {
           >
             <FaBars />
           </button>
-          <h2 className="text-2xl font-bold text-slate-800">Overview</h2>
+          <h2 className="text-2xl font-bold text-slate-800">
+            {location.pathname === "/dashboard" && "Overview"}
+            {location.pathname === "/profile" && "Profile Settings"}
+            {location.pathname === "/my-bookings" && "My Bookings"}
+            {location.pathname === "/saved-skills" && "Saved Skills"}
+            {location.pathname === "/add-skill" && "Add Skill"}
+            {location.pathname === "/settings" && "Settings"}
+          </h2>
         </header>
 
-        {/* STATS CARDS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            { label: "Bookings", val: bookings.length, icon: <FaCalendarCheck className="text-blue-500" /> },
-            { label: "Saved Skills", val: savedSkills.length, icon: <FaBookmark className="text-pink-500" /> },
-            { label: "Account Status", val: "Active", icon: <FaGraduationCap className="text-green-500" /> },
-            { label: "Skill Growth", val: "+24%", icon: <FaChartLine className="text-cyan-500" /> },
-          ].map((stat, index) => (
-            <div key={index} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-              <div className="text-2xl mb-4">{stat.icon}</div>
-              <p className="text-slate-500 font-medium text-sm">{stat.label}</p>
-              <h3 className="text-2xl font-bold text-slate-900 mt-1">{stat.val}</h3>
+        {/* DASHBOARD VIEW */}
+        {location.pathname === "/dashboard" && (
+          <>
+            {/* STATS CARDS */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { label: "Bookings", val: bookings.length, icon: <FaCalendarCheck className="text-blue-500" /> },
+                { label: "Saved Skills", val: savedSkills.length, icon: <FaBookmark className="text-pink-500" /> },
+                { label: "Account Status", val: "Active", icon: <FaGraduationCap className="text-green-500" /> },
+                { label: "Skill Growth", val: "+24%", icon: <FaChartLine className="text-cyan-500" /> },
+              ].map((stat, index) => (
+                <div key={index} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                  <div className="text-2xl mb-4">{stat.icon}</div>
+                  <p className="text-slate-500 font-medium text-sm">{stat.label}</p>
+                  <h3 className="text-2xl font-bold text-slate-900 mt-1">{stat.val}</h3>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        {/* PROFILE SECTION */}
-        <div className="mt-10 bg-white p-8 rounded-3xl shadow-sm border border-slate-100 max-w-2xl">
-          <h2 className="text-2xl font-bold mb-6 text-slate-800">Profile Settings</h2>
+            {/* MY BOOKINGS SECTION - Dashboard View */}
+            <div className="mt-10 bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+              <h2 className="text-2xl font-bold mb-6 text-slate-800">Recent Bookings</h2>
+
+              {bookings.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-slate-500">No bookings yet</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b-2 border-slate-200">
+                        <th className="text-left py-4 px-4 font-bold text-slate-700">Skill</th>
+                        <th className="text-left py-4 px-4 font-bold text-slate-700">Provider</th>
+                        <th className="text-left py-4 px-4 font-bold text-slate-700">Booked At</th>
+                        <th className="text-center py-4 px-4 font-bold text-slate-700">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bookings.slice(0, 3).map((booking) => (
+                        <tr key={booking.bookingId} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                          <td className="py-4 px-4">
+                            <p className="font-bold text-slate-900">{booking.skillName}</p>
+                          </td>
+                          <td className="py-4 px-4">
+                            <p className="font-semibold text-slate-900">{booking.providerName}</p>
+                          </td>
+                          <td className="py-4 px-4">
+                            <p className="text-sm text-slate-600">
+                              {new Date(booking.bookedAt).toLocaleDateString()}
+                            </p>
+                          </td>
+                          <td className="py-4 px-4 text-center">
+                            <button
+                              onClick={() => handleRemoveBooking(booking.bookingId)}
+                              disabled={removingId === booking.bookingId}
+                              className="text-red-600 hover:text-red-800 font-semibold disabled:opacity-50"
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+
+        {/* PROFILE VIEW */}
+        {location.pathname === "/profile" && (
+          <div className="mt-10 bg-white p-8 rounded-3xl shadow-sm border border-slate-100 max-w-2xl">
+            <h2 className="text-2xl font-bold mb-6 text-slate-800">Profile Settings</h2>
 
           <form onSubmit={handleUpdate} className="space-y-6">
             <div className="space-y-2">
@@ -215,41 +278,43 @@ const Dashboard = () => {
             </button>
           </form>
         </div>
+        )}
 
-        {/* MY BOOKINGS SECTION */}
-        <div className="mt-10 bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-          <h2 className="text-2xl font-bold mb-6 text-slate-800">My Bookings</h2>
+        {/* MY BOOKINGS VIEW */}
+        {location.pathname === "/my-bookings" && (
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+            <h2 className="text-2xl font-bold mb-6 text-slate-800">My Bookings</h2>
 
-          {bookings.length === 0 ? (
-            <div className="text-center py-12">
-              <FaCalendarCheck className="text-6xl text-slate-200 mx-auto mb-4" />
-              <p className="text-slate-500 text-lg">No bookings yet</p>
-              <p className="text-slate-400 text-sm mt-2">Explore skills and book your first session</p>
-              <Link 
-                to="/all-skills"
-                className="inline-block mt-4 bg-cyan-500 hover:bg-cyan-600 text-white font-bold px-8 py-3 rounded-2xl transition-all"
-              >
-                Browse Skills
-              </Link>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b-2 border-slate-200">
-                    <th className="text-left py-4 px-4 font-bold text-slate-700">Skill</th>
-                    <th className="text-left py-4 px-4 font-bold text-slate-700">Provider</th>
-                    <th className="text-left py-4 px-4 font-bold text-slate-700">Price</th>
-                    <th className="text-left py-4 px-4 font-bold text-slate-700">Booked At</th>
-                    <th className="text-center py-4 px-4 font-bold text-slate-700">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bookings.map((booking) => (
-                    <tr key={booking.bookingId} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-3">
-                          <img 
+            {bookings.length === 0 ? (
+              <div className="text-center py-12">
+                <FaCalendarCheck className="text-6xl text-slate-200 mx-auto mb-4" />
+                <p className="text-slate-500 text-lg">No bookings yet</p>
+                <p className="text-slate-400 text-sm mt-2">Explore skills and book your first session</p>
+                <Link 
+                  to="/all-skills"
+                  className="inline-block mt-4 bg-cyan-500 hover:bg-cyan-600 text-white font-bold px-8 py-3 rounded-2xl transition-all"
+                >
+                  Browse Skills
+                </Link>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b-2 border-slate-200">
+                      <th className="text-left py-4 px-4 font-bold text-slate-700">Skill</th>
+                      <th className="text-left py-4 px-4 font-bold text-slate-700">Provider</th>
+                      <th className="text-left py-4 px-4 font-bold text-slate-700">Price</th>
+                      <th className="text-left py-4 px-4 font-bold text-slate-700">Booked At</th>
+                      <th className="text-center py-4 px-4 font-bold text-slate-700">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bookings.map((booking) => (
+                      <tr key={booking.bookingId} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                        <td className="py-4 px-4">
+                          <div className="flex items-center gap-3">
+                            <img 
                             src={booking.image} 
                             alt={booking.skillName}
                             className="w-12 h-12 rounded-lg object-cover"
@@ -287,32 +352,34 @@ const Dashboard = () => {
                 </tbody>
               </table>
             </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
 
-        {/* SAVED SKILLS SECTION */}
-        <div className="mt-10 bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-          <h2 className="text-2xl font-bold mb-6 text-slate-800">Saved Skills</h2>
+        {/* SAVED SKILLS VIEW */}
+        {location.pathname === "/saved-skills" && (
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+            <h2 className="text-2xl font-bold mb-6 text-slate-800">Saved Skills</h2>
 
-          {savedSkills.length === 0 ? (
-            <div className="text-center py-12">
-              <FaBookmark className="text-6xl text-slate-200 mx-auto mb-4" />
-              <p className="text-slate-500 text-lg">No saved skills yet</p>
-              <p className="text-slate-400 text-sm mt-2">Bookmark skills you're interested in</p>
-              <Link 
-                to="/all-skills"
-                className="inline-block mt-4 bg-cyan-500 hover:bg-cyan-600 text-white font-bold px-8 py-3 rounded-2xl transition-all"
-              >
-                Explore Skills
-              </Link>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {savedSkills.map((skill) => (
-                <div key={skill.skillId} className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow border border-slate-200">
-                  <div className="relative">
-                    <img 
-                      src={skill.image} 
+            {savedSkills.length === 0 ? (
+              <div className="text-center py-12">
+                <FaBookmark className="text-6xl text-slate-200 mx-auto mb-4" />
+                <p className="text-slate-500 text-lg">No saved skills yet</p>
+                <p className="text-slate-400 text-sm mt-2">Bookmark skills you're interested in</p>
+                <Link 
+                  to="/all-skills"
+                  className="inline-block mt-4 bg-cyan-500 hover:bg-cyan-600 text-white font-bold px-8 py-3 rounded-2xl transition-all"
+                >
+                  Explore Skills
+                </Link>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {savedSkills.map((skill) => (
+                  <div key={skill.skillId} className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow border border-slate-200">
+                    <div className="relative">
+                      <img 
+                        src={skill.image} 
                       alt={skill.skillName}
                       className="w-full h-48 object-cover"
                     />
@@ -351,8 +418,16 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
+
+        {/* ADD SKILL & SETTINGS PLACEHOLDERS */}
+        {(location.pathname === "/add-skill" || location.pathname === "/settings") && (
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+            <p className="text-slate-600 text-lg">Coming soon...</p>
+          </div>
+        )}
       </main>
     </div>
   );
