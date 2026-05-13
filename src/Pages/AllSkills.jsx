@@ -25,15 +25,16 @@ const AllSkills = () => {
   const [view, setView] = useState("grid");
   const [openSort, setOpenSort] = useState(false);
 
-  const categories = [
-    "All",
-    "Programming",
-    "Design",
-    "Music",
-    "Language",
-    "Fitness",
-    "Marketing",
-  ];
+  // Dynamically generate categories from skills
+  const categories = useMemo(() => {
+    const categorySet = new Set(["All"]);
+    skill.forEach((s) => {
+      if (s.category) {
+        categorySet.add(s.category);
+      }
+    });
+    return Array.from(categorySet);
+  }, [skill]);
 
   const sortOptions = [
     { label: "Top Rated", value: "rating" },

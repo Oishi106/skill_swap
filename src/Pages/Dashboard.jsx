@@ -146,7 +146,12 @@ const Dashboard = () => {
         slotsAvailable: "",
       });
 
-      toast.success("Skill added successfully!");
+      toast.success("Skill published successfully!");
+      
+      // Trigger a storage event to notify other components
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('skillPublished'));
+      }
     } catch (err) {
       toast.error("Failed to add skill");
     } finally {
