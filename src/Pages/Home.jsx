@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { FaExchangeAlt, FaShieldAlt, FaLock, FaMobileAlt, FaUserPlus, FaListAlt, FaCalendarCheck, FaGraduationCap, FaUsers, FaHandshake, FaHeart, FaMapMarkerAlt, FaFireAlt, FaUserShield, FaChevronDown, FaChevronUp, FaCode, FaMusic, FaLanguage, FaDumbbell } from "react-icons/fa";
+import { FaExchangeAlt, FaShieldAlt, FaLock, FaMobileAlt, FaUserPlus, FaListAlt, FaCalendarCheck, FaGraduationCap, FaUsers, FaHandshake, FaHeart, FaMapMarkerAlt, FaFireAlt, FaUserShield, FaChevronDown, FaChevronUp, FaCode, FaMusic, FaLanguage, FaDumbbell, FaStar } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Mycontainer from "../components/Mycontainer";
@@ -78,7 +78,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-b from-white to-[#E3E3E3]">
+    <div className="bg-gradient-to-b from-white via-cyan-50 to-blue-50 min-h-screen overflow-hidden">
       <main className="min-h-screen">
         
         {/* Hero Section (Swiper) */}
@@ -328,28 +328,40 @@ const Home = () => {
 
         <Mycontainer>
           
-          {/* 1. Key Features Section */}
-          <section className="py-16 md:py-20">
+          {/* 1. Key Features Section with Background */}
+          <section className="py-16 md:py-24 relative overflow-hidden">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-5">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-400 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-400 rounded-full blur-3xl" />
+            </div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12"
+              className="text-center mb-12 relative z-10"
             >
-              <span className="inline-block bg-[#1B3C53]/10 text-[#1B3C53] text-sm font-semibold px-4 py-2 rounded-full mb-4">
-                ✨ Why Choose Us
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1B3C53] mb-4">
-               <span className="text-[#BF124D]">Why Skill</span>  Exchange?
+              <motion.span 
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="inline-block bg-gradient-to-r from-cyan-400/20 to-blue-400/20 text-cyan-600 text-sm font-bold px-4 py-2 rounded-full mb-4 border border-cyan-400/30"
+              >
+                ✨ Platform Features
+              </motion.span>
+              <h2 className="text-4xl md:text-5xl font-black text-[#0F172A] mb-4">
+               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-600">Why Choose</span> SkillSwap?
               </h2>
-              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                A modern platform built for meaningful skill exchange
+              <p className="text-gray-600 text-lg max-w-3xl mx-auto">
+                A modern platform designed for seamless skill exchange and community learning
               </p>
             </motion.div>
 
             <motion.div 
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10"
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
@@ -358,94 +370,117 @@ const Home = () => {
               {[
                 {
                   icon: FaExchangeAlt,
-                  title: "Skill Exchange Marketplace",
-                  desc: "Connect with others to share and learn new skills in your local community",
-                  gradient: "from-[#1B3C53] to-[#234C6A]",
-                  bgColor: "bg-[#1B3C53]/5",
-                  borderColor: "border-[#1B3C53]/20"
+                  title: "Smart Marketplace",
+                  desc: "Connect instantly with learners and teachers in your community",
+                  gradient: "from-cyan-500 to-blue-600",
+                  bgColor: "bg-gradient-to-br from-cyan-50 to-blue-50",
+                  accent: "text-cyan-600"
                 },
                 {
                   icon: FaShieldAlt,
-                  title: "Secure Firebase Auth",
-                  desc: "Your account is protected with industry-standard Firebase Authentication",
-                  gradient: "from-[#234C6A] to-[#456882]",
-                  bgColor: "bg-[#234C6A]/5",
-                  borderColor: "border-[#234C6A]/20"
+                  title: "Enterprise Security",
+                  desc: "Protected with Google Firebase authentication and encryption",
+                  gradient: "from-purple-500 to-indigo-600",
+                  bgColor: "bg-gradient-to-br from-purple-50 to-indigo-50",
+                  accent: "text-purple-600"
                 },
                 {
                   icon: FaLock,
-                  title: "Protected Booking",
-                  desc: "Private routes ensure only verified users can access booking features",
-                  gradient: "from-[#456882] to-[#1B3C53]",
-                  bgColor: "bg-[#456882]/5",
-                  borderColor: "border-[#456882]/20"
+                  title: "Private & Safe",
+                  desc: "Verified bookings and secure communication with verified users",
+                  gradient: "from-emerald-500 to-teal-600",
+                  bgColor: "bg-gradient-to-br from-emerald-50 to-teal-50",
+                  accent: "text-emerald-600"
                 },
                 {
                   icon: FaMobileAlt,
-                  title: "Responsive & Minimal UI",
-                  desc: "Clean, modern design that works beautifully on any device",
-                  gradient: "from-[#1B3C53] to-[#456882]",
-                  bgColor: "bg-[#1B3C53]/5",
-                  borderColor: "border-[#1B3C53]/20"
+                  title: "Fully Responsive",
+                  desc: "Beautiful experience across all devices and screen sizes",
+                  gradient: "from-orange-500 to-rose-600",
+                  bgColor: "bg-gradient-to-br from-orange-50 to-rose-50",
+                  accent: "text-orange-600"
                 }
               ].map((feature, index) => (
                 <motion.div
                   key={index}
                   variants={fadeInUp}
-                  className={`${feature.bgColor} rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border ${feature.borderColor} group hover:-translate-y-1`}
+                  whileHover={{ y: -8 }}
+                  className={`${feature.bgColor} rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-white group relative overflow-hidden`}
                 >
-                  <div className={`bg-gradient-to-br ${feature.gradient} w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-md`}>
-                    <feature.icon className="text-white text-xl" />
+                  {/* Background Gradient Overlay */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-br from-white to-transparent transition-opacity duration-300" />
+                  
+                  <div className={`bg-gradient-to-br ${feature.gradient} w-16 h-16 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                    <feature.icon className="text-white text-2xl" />
                   </div>
-                  <h3 className="text-lg font-bold text-[#1B3C53] mb-2">{feature.title}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{feature.desc}</p>
+                  <h3 className={`text-xl font-bold ${feature.accent} mb-3`}>{feature.title}</h3>
+                  <p className="text-gray-700 text-sm leading-relaxed">{feature.desc}</p>
                 </motion.div>
               ))}
             </motion.div>
           </section>
 
           {/* 2. How It Works Section */}
-          <section className="py-16 md:py-20  bg-white rounded-3xl shadow-sm -mx-4 px-4 md:-mx-8 md:px-8">
+          <section className="py-16 md:py-24 bg-gradient-to-br from-[#0F172A] via-[#1B3C53] to-[#0F172A] rounded-3xl shadow-2xl relative overflow-hidden">
+            {/* Decorative Elements */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-10 right-10 w-40 h-40 bg-cyan-400 rounded-full blur-3xl" />
+              <div className="absolute bottom-10 left-10 w-40 h-40 bg-blue-400 rounded-full blur-3xl" />
+            </div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12"
+              className="text-center mb-16 relative z-10"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1B3C53] mb-4">
-                How <span className="text-[#BF124D]">It Works</span> 
+              <motion.span 
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="inline-block bg-white/10 text-white text-sm font-bold px-4 py-2 rounded-full mb-4 border border-white/20"
+              >
+                🚀 Getting Started
+              </motion.span>
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+                How <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-300">It Works</span>
               </h2>
-              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                Get started in four simple steps
+              <p className="text-white/80 text-lg max-w-3xl mx-auto">
+                Three simple steps to connect, learn, and share your passion with our community
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10 max-w-7xl mx-auto px-4">
               {[
                 {
                   icon: FaUserPlus,
-                  step: "01",
-                  title: "Sign Up Securely",
-                  desc: "Create your free account with secure Firebase authentication"
+                  step: "1",
+                  title: "Create Account",
+                  desc: "Sign up securely with Firebase authentication",
+                  color: "from-cyan-400 to-blue-500"
                 },
                 {
                   icon: FaListAlt,
-                  step: "02",
-                  title: "Browse or List Skills",
-                  desc: "Share what you can teach or find skills you want to learn"
+                  step: "2",
+                  title: "Find or List Skills",
+                  desc: "Browse available skills or share your expertise",
+                  color: "from-purple-400 to-indigo-500"
                 },
                 {
                   icon: FaCalendarCheck,
-                  step: "03",
-                  title: "Book with Confidence",
-                  desc: "Schedule sessions through our protected booking system"
+                  step: "3",
+                  title: "Book Sessions",
+                  desc: "Schedule with confidence through our protected system",
+                  color: "from-emerald-400 to-teal-500"
                 },
                 {
                   icon: FaGraduationCap,
-                  step: "04",
+                  step: "4",
                   title: "Learn & Grow",
-                  desc: "Connect, learn, teach, and grow together as a community"
+                  desc: "Connect, learn, teach, and build your network",
+                  color: "from-orange-400 to-rose-500"
                 }
               ].map((item, index) => (
                 <motion.div
@@ -453,17 +488,33 @@ const Home = () => {
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="text-center relative"
+                  transition={{ duration: 0.5, delay: index * 0.15 }}
+                  whileHover={{ y: -5 }}
+                  className="relative"
                 >
-                  <div className="bg-gradient-to-br from-[#1B3C53] to-[#234C6A] w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <item.icon className="text-white text-3xl" />
+                  {/* Connection Line */}
+                  {index < 3 && (
+                    <div className="hidden lg:block absolute top-20 left-full w-full h-1 bg-gradient-to-r from-cyan-400 via-blue-400 to-transparent -z-10" />
+                  )}
+
+                  <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-8 border border-white/20 hover:border-white/40 transition-all duration-300 backdrop-blur-sm text-center">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.15 + 0.2 }}
+                      className={`bg-gradient-to-br ${item.color} w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg`}
+                    >
+                      <item.icon className="text-white text-2xl" />
+                    </motion.div>
+
+                    <div className={`bg-gradient-to-br ${item.color} w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-4 shadow-lg`}>
+                      {item.step}
+                    </div>
+
+                    <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+                    <p className="text-white/70 text-sm leading-relaxed">{item.desc}</p>
                   </div>
-                  <span className="absolute top-0 right-1/2 transform translate-x-14 -translate-y-2 bg-[#BF124D] text-white text-xs font-bold px-2 py-1 rounded-full">
-                    {item.step}
-                  </span>
-                  <h3 className="text-xl font-bold text-[#1B3C53] mb-2">{item.title}</h3>
-                  <p className="text-gray-600 text-sm">{item.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -471,245 +522,354 @@ const Home = () => {
         </Mycontainer>
 
         {/* 3. Popular/Featured Skills Section - Full Width */}
-        <section className="py-16 md:py-20 bg-gradient-to-br from-[#1B3C53] via-[#234C6A] to-[#456882]">
-          <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
+        <section className="py-16 md:py-24 bg-gradient-to-br from-[#0F172A] via-[#1B3C53] to-[#234C6A] relative overflow-hidden">
+          {/* Animated Background Elements */}
+          <div className="absolute inset-0 opacity-20">
+            <motion.div
+              animate={{ y: [0, 20, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+              className="absolute top-20 left-20 w-48 h-48 bg-cyan-400 rounded-full blur-3xl"
+            />
+            <motion.div
+              animate={{ y: [0, -20, 0] }}
+              transition={{ duration: 5, repeat: Infinity }}
+              className="absolute bottom-20 right-20 w-48 h-48 bg-blue-400 rounded-full blur-3xl"
+            />
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12"
+              className="text-center mb-16"
             >
-              <span className="inline-block bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-full mb-4">
-                🔥 Trending Now
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Popular Skills
+              <motion.span 
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="inline-block bg-white/10 text-cyan-300 text-sm font-bold px-4 py-2 rounded-full mb-4 border border-cyan-400/30"
+              >
+                🔥 Most Popular
+              </motion.span>
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+                Trending <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-300">Skills</span>
               </h2>
-              <p className="text-white/80 text-lg max-w-2xl mx-auto">
-                Explore trending skill categories in our community
+              <p className="text-white/80 text-lg max-w-3xl mx-auto">
+                Explore the most popular skill categories in our growing community
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <motion.div 
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
               {[
                 {
                   icon: FaCode,
                   name: "Coding",
-                  tagline: "Web, Mobile & Software Development",
-                  iconBg: "bg-gradient-to-br from-blue-500 to-blue-700",
-                  accent: "text-blue-400"
+                  tagline: "Web, Mobile & Software",
+                  count: "150+ Teachers",
+                  gradient: "from-blue-500 to-blue-700",
+                  accent: "text-blue-300"
                 },
                 {
                   icon: FaMusic,
                   name: "Music",
-                  tagline: "Instruments, Vocals & Production",
-                  iconBg: "bg-gradient-to-br from-purple-500 to-purple-700",
-                  accent: "text-purple-400"
+                  tagline: "Instruments & Production",
+                  count: "80+ Instructors",
+                  gradient: "from-purple-500 to-purple-700",
+                  accent: "text-purple-300"
                 },
                 {
                   icon: FaLanguage,
                   name: "Languages",
-                  tagline: "Learn Any Language from Natives",
-                  iconBg: "bg-gradient-to-br from-emerald-500 to-emerald-700",
-                  accent: "text-emerald-400"
+                  tagline: "Learn Any Language",
+                  count: "120+ Speakers",
+                  gradient: "from-emerald-500 to-emerald-700",
+                  accent: "text-emerald-300"
                 },
                 {
                   icon: FaDumbbell,
                   name: "Fitness",
-                  tagline: "Training, Yoga & Wellness",
-                  iconBg: "bg-gradient-to-br from-orange-500 to-red-600",
-                  accent: "text-orange-400"
+                  tagline: "Training & Wellness",
+                  count: "90+ Coaches",
+                  gradient: "from-orange-500 to-red-600",
+                  accent: "text-orange-300"
                 }
               ].map((skill, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 group hover:bg-white/20 hover:-translate-y-2 transition-all duration-300"
+                  variants={fadeInUp}
+                  whileHover={{ y: -8 }}
+                  className="bg-white/5 backdrop-blur-xl rounded-2xl p-8 border border-white/20 group hover:border-white/40 transition-all duration-300 cursor-pointer"
                 >
-                  <div className={`${skill.iconBg} w-16 h-16 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                    <skill.icon className="text-white text-2xl" />
+                  <div className={`bg-gradient-to-br ${skill.gradient} w-20 h-20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                    <skill.icon className="text-white text-3xl" />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">{skill.name}</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">{skill.name}</h3>
                   <p className="text-white/70 text-sm mb-4">{skill.tagline}</p>
-                  <div className={`${skill.accent} text-xs font-semibold`}>Learn More →</div>
+                  <div className={`${skill.accent} text-xs font-bold flex items-center gap-2`}>
+                    <span>{skill.count}</span>
+                    <span className="text-lg">→</span>
+                  </div>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
 
-            <div className="text-center">
-              <Link to="/all-skills">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-gradient-to-r from-[#1B3C53] to-[#234C6A] text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  Explore All Skills
-                </motion.button>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* 4. Why Choose SkillSwap Section - Full Width */}
-        <section className="py-16 md:py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12"
+              className="text-center"
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#1B3C53]">
-                Why Choose Skill Exchange?
+              <Link to="/all-skills">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-cyan-400 to-blue-500 text-[#0F172A] font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300"
+                >
+                  Explore All Skills →
+                </motion.button>
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* 4. Why Choose SkillSwap Section - Full Width */}
+        <section className="py-16 md:py-24 bg-gradient-to-br from-white via-cyan-50 to-blue-50 relative overflow-hidden">
+          {/* Decorative Elements */}
+          <div className="absolute inset-0 opacity-30">
+            <motion.div
+              animate={{ y: [0, 30, 0] }}
+              transition={{ duration: 6, repeat: Infinity }}
+              className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-200 rounded-full blur-3xl"
+            />
+            <motion.div
+              animate={{ y: [0, -30, 0] }}
+              transition={{ duration: 7, repeat: Infinity }}
+              className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-200 rounded-full blur-3xl"
+            />
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-black mb-4 text-[#0F172A]">
+                Why Choose <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600">SkillSwap?</span>
               </h2>
-              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                Built with your needs in mind
+              <p className="text-gray-700 text-lg max-w-3xl mx-auto">
+                Build meaningful connections and unlock your potential in the world's most trusted skill exchange platform
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
               {[
                 {
                   icon: FaUsers,
-                  title: "Community-Driven Learning",
-                  desc: "Learn from real people in your community who share your passion"
+                  title: "Community First",
+                  desc: "Join thousands of learners and teachers building a supportive ecosystem"
                 },
                 {
                   icon: FaUserShield,
-                  title: "Secure & Private Accounts",
-                  desc: "Your data is protected with industry-leading security measures"
+                  title: "Enterprise Security",
+                  desc: "Google Firebase ensures your data is protected with military-grade encryption"
                 },
                 {
                   icon: FaHandshake,
-                  title: "Simple Booking Process",
-                  desc: "Intuitive scheduling that makes connecting effortless"
+                  title: "Seamless Booking",
+                  desc: "Our intuitive system makes scheduling and managing sessions effortless"
                 },
                 {
                   icon: FaMapMarkerAlt,
-                  title: "Meaningful Local Connections",
-                  desc: "Build relationships with skilled individuals in your area"
+                  title: "Local & Personal",
+                  desc: "Connect with talented individuals in your area and build lasting relationships"
                 }
               ].map((item, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-gradient-to-br from-[#E3E3E3] to-white rounded-xl p-6 flex items-start gap-4 hover:shadow-lg transition-all duration-300 border border-gray-100"
+                  variants={fadeInUp}
+                  whileHover={{ x: 5 }}
+                  className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-cyan-200 flex items-start gap-6 group"
                 >
-                  <div className="bg-gradient-to-br from-[#1B3C53] to-[#234C6A] p-3 rounded-lg">
-                    <item.icon className="text-white text-xl" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg mb-1 text-[#1B3C53]">{item.title}</h3>
-                    <p className="text-gray-600 text-sm">{item.desc}</p>
+                  <motion.div 
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                    className="bg-gradient-to-br from-cyan-500 to-blue-600 p-4 rounded-lg flex-shrink-0"
+                  >
+                    <item.icon className="text-white text-2xl" />
+                  </motion.div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg mb-2 text-[#0F172A]">{item.title}</h3>
+                    <p className="text-gray-700 text-sm leading-relaxed">{item.desc}</p>
                   </div>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
 
         <Mycontainer>
 
           {/* 5. Trust & Community Section */}
-          <section className="py-16 md:py-20">
+          <section className="py-16 md:py-24 relative">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12"
+              className="text-center mb-16"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1B3C53] mb-4">
-                 <span className="text-[#BF124D]">Trust & </span> Community
+              <motion.span 
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="inline-block bg-gradient-to-r from-emerald-400/20 to-teal-400/20 text-emerald-700 text-sm font-bold px-4 py-2 rounded-full mb-4 border border-emerald-400/30"
+              >
+                ✅ Trusted by Thousands
+              </motion.span>
+              <h2 className="text-4xl md:text-5xl font-black text-[#0F172A] mb-4">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">Trust & </span>Security
               </h2>
-              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                Safety and reliability at the core of everything we do
+              <p className="text-gray-700 text-lg max-w-3xl mx-auto">
+                Your safety and privacy are at the core of everything we do
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
               {[
                 {
                   icon: FaFireAlt,
-                  title: "Firebase Security",
-                  desc: "Industry-standard authentication powered by Google's Firebase platform"
+                  title: "Firebase Powered",
+                  desc: "Google's enterprise-grade authentication for maximum security"
                 },
                 {
                   icon: FaHeart,
-                  title: "Inclusive Community",
-                  desc: "Respectful guidelines ensure a welcoming environment for all learners"
+                  title: "Verified Community",
+                  desc: "All members go through verification to ensure a safe environment"
                 },
                 {
                   icon: FaShieldAlt,
-                  title: "Privacy Protected",
-                  desc: "Your personal information is encrypted and never shared with third parties"
+                  title: "Data Privacy",
+                  desc: "Your information is encrypted and never shared with third parties"
                 }
               ].map((item, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-white rounded-2xl p-8 shadow-lg text-center border border-gray-100"
+                  variants={fadeInUp}
+                  whileHover={{ y: -8 }}
+                  className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-emerald-100 hover:border-emerald-300 text-center group relative overflow-hidden"
                 >
-                  <div className="bg-gradient-to-br from-[#456882]/20 to-[#234C6A]/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <item.icon className="text-[#234C6A] text-2xl" />
-                  </div>
-                  <h3 className="text-xl font-bold text-[#1B3C53] mb-2">{item.title}</h3>
-                  <p className="text-gray-600 text-sm">{item.desc}</p>
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-br from-emerald-400 to-teal-400 transition-opacity duration-300" />
+                  
+                  <motion.div 
+                    whileHover={{ scale: 1.2, rotate: 10 }}
+                    className="bg-gradient-to-br from-emerald-500 to-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"
+                  >
+                    <item.icon className="text-white text-2xl" />
+                  </motion.div>
+                  <h3 className="text-xl font-bold text-[#0F172A] mb-3">{item.title}</h3>
+                  <p className="text-gray-700 text-sm leading-relaxed">{item.desc}</p>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
 
-            {/* Stats */}
+            {/* Stats with animated counters */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="bg-[#E3E3E3] rounded-2xl p-8 grid grid-cols-2 md:grid-cols-4 gap-6"
+              className="bg-gradient-to-r from-[#0F172A] via-[#1B3C53] to-[#234C6A] rounded-3xl p-8 md:p-12 grid grid-cols-2 md:grid-cols-4 gap-8 shadow-2xl"
             >
               {[
-                { number: "500+", label: "Skills Shared" },
-                { number: "1,200+", label: "Active Learners" },
-                { number: "300+", label: "Expert Teachers" },
-                { number: "98%", label: "Satisfaction Rate" }
+                { number: "500+", label: "Skills Shared", icon: FaCode },
+                { number: "10K+", label: "Active Members", icon: FaUsers },
+                { number: "300+", label: "Expert Teachers", icon: FaGraduationCap },
+                { number: "4.9★", label: "Average Rating", icon: FaStar }
               ].map((stat, index) => (
-                <div key={index} className="text-center">
-                  <p className="text-3xl md:text-4xl font-bold text-[#1B3C53]">{stat.number}</p>
-                  <p className="text-gray-600 text-sm">{stat.label}</p>
-                </div>
+                <motion.div 
+                  key={index}
+                  initial={{ opacity: 0, scale: 0 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.15 }}
+                  className="text-center"
+                >
+                  <motion.div
+                    animate={{ y: [0, -5, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, delay: index * 0.2 }}
+                    className="mb-4"
+                  >
+                    <stat.icon className="text-cyan-400 text-3xl mx-auto" />
+                  </motion.div>
+                  <p className="text-3xl md:text-4xl font-black text-white">{stat.number}</p>
+                  <p className="text-white/70 text-sm mt-2">{stat.label}</p>
+                </motion.div>
               ))}
             </motion.div>
           </section>
 
           {/* 6. FAQ Section */}
-          <section className="py-16 md:py-20 bg-white rounded-3xl shadow-sm -mx-4 px-4 md:-mx-8 md:px-8">
+          <section className="py-16 md:py-24 bg-gradient-to-br from-cyan-50 via-blue-50 to-white rounded-3xl shadow-lg relative overflow-hidden">
+            {/* Decorative Elements */}
+            <div className="absolute inset-0 opacity-20">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute top-10 right-10 w-40 h-40 border-2 border-cyan-200 rounded-full"
+              />
+            </div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12"
+              className="text-center mb-12 relative z-10"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1B3C53] mb-4">
-                 <span className="text-[#BF124D]">Frequently</span> Asked <span className="text-[#BF124D]">Questions</span>
+              <motion.span 
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="inline-block bg-gradient-to-r from-blue-400/20 to-cyan-400/20 text-blue-700 text-sm font-bold px-4 py-2 rounded-full mb-4 border border-blue-400/30"
+              >
+                ❓ Got Questions?
+              </motion.span>
+              <h2 className="text-4xl md:text-5xl font-black text-[#0F172A] mb-4">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">Frequently</span> Asked Questions
               </h2>
-              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                Quick answers to common questions
+              <p className="text-gray-700 text-lg max-w-3xl mx-auto">
+                Find answers to common questions about SkillSwap
               </p>
             </motion.div>
 
-            <div className="max-w-3xl mx-auto space-y-4">
+            <div className="max-w-3xl mx-auto space-y-4 relative z-10">
               {faqData.map((faq, index) => (
                 <motion.div
                   key={index}
@@ -717,18 +877,23 @@ const Home = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="border border-gray-200 rounded-xl overflow-hidden"
+                  className="border-2 border-blue-200 rounded-xl overflow-hidden hover:border-blue-400 transition-colors duration-300"
                 >
                   <button
                     onClick={() => toggleFaq(index)}
-                    className="w-full px-6 py-4 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
+                    className="w-full px-6 py-4 flex items-center justify-between bg-gradient-to-r from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 transition-colors duration-200"
                   >
-                    <span className="font-semibold text-[#1B3C53] text-left">{faq.question}</span>
-                    {openFaq === index ? (
-                      <FaChevronUp className="text-[#234C6A] flex-shrink-0" />
-                    ) : (
-                      <FaChevronDown className="text-[#234C6A] flex-shrink-0" />
-                    )}
+                    <span className="font-bold text-[#0F172A] text-left text-lg">{faq.question}</span>
+                    <motion.div
+                      animate={{ rotate: openFaq === index ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {openFaq === index ? (
+                        <FaChevronUp className="text-blue-600 flex-shrink-0 text-lg" />
+                      ) : (
+                        <FaChevronDown className="text-blue-600 flex-shrink-0 text-lg" />
+                      )}
+                    </motion.div>
                   </button>
                   <motion.div
                     initial={false}
@@ -739,7 +904,7 @@ const Home = () => {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <p className="px-6 py-4 text-gray-600 bg-white">{faq.answer}</p>
+                    <p className="px-6 py-4 text-gray-700 bg-white border-t-2 border-blue-100">{faq.answer}</p>
                   </motion.div>
                 </motion.div>
               ))}
@@ -747,84 +912,132 @@ const Home = () => {
           </section>
 
           {/* 7. Call To Action Section */}
-          <section className="py-20 md:py-24">
+          <section className="py-20 md:py-28 relative">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="bg-gradient-to-r from-[#1B3C53] via-[#234C6A] to-[#456882] rounded-3xl p-8 md:p-16 text-center shadow-2xl"
+              className="bg-gradient-to-br from-[#0F172A] via-[#1B3C53] to-[#234C6A] rounded-3xl p-8 md:p-16 text-center shadow-2xl relative overflow-hidden"
             >
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                Ready to share your skills or learn something new?
-              </h2>
-              <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-                Join our growing community of learners and teachers today
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              {/* Animated Background Elements */}
+              <div className="absolute inset-0 opacity-20">
+                <motion.div
+                  animate={{ y: [0, 20, 0] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                  className="absolute top-10 right-10 w-40 h-40 bg-cyan-400 rounded-full blur-3xl"
+                />
+                <motion.div
+                  animate={{ y: [0, -20, 0] }}
+                  transition={{ duration: 5, repeat: Infinity }}
+                  className="absolute bottom-10 left-10 w-40 h-40 bg-blue-400 rounded-full blur-3xl"
+                />
+              </div>
+
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 relative z-10 leading-tight"
+              >
+                Ready to Share Your Passion?
+              </motion.h2>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-white/90 text-xl mb-10 max-w-2xl mx-auto relative z-10"
+              >
+                Join thousands of learners and teachers in our vibrant community
+              </motion.p>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center relative z-10"
+              >
                 <Link to="/signup">
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-gradient-to-r from-[#1B3C53] to-[#234C6A] text-white font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="bg-gradient-to-r from-cyan-400 to-blue-500 text-[#0F172A] font-bold px-12 py-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 text-lg w-full sm:w-auto"
                   >
-                    Get Started
+                    Start Learning Today
                   </motion.button>
                 </Link>
                 <Link to="/all-skills">
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-white text-[#1B3C53] font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="bg-white/20 border-2 border-white text-white font-bold px-12 py-4 rounded-xl hover:bg-white/30 transition-all duration-300 text-lg backdrop-blur-sm w-full sm:w-auto"
                   >
                     Browse Skills
                   </motion.button>
                 </Link>
-              </div>
+              </motion.div>
             </motion.div>
           </section>
 
           {/* Skill Cards Section */}
-          <section className="pb-16">
+          <section className="pb-16 md:pb-24 relative">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12"
+              className="text-center mb-16"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1B3C53] mb-4">
-                Available Skills
+              <motion.span 
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="inline-block bg-gradient-to-r from-orange-400/20 to-rose-400/20 text-orange-700 text-sm font-bold px-4 py-2 rounded-full mb-4 border border-orange-400/30"
+              >
+                🎯 Latest Opportunities
+              </motion.span>
+              <h2 className="text-4xl md:text-5xl font-black text-[#0F172A] mb-4">
+                Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-rose-600">Available Skills</span>
               </h2>
-              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                Discover a wide range of skills and connect with top-rated providers
+              <p className="text-gray-700 text-lg max-w-3xl mx-auto">
+                Explore newly listed skills and connect with top-rated providers in your area
               </p>
             </motion.div>
 
-            <div className="flex flex-wrap gap-3 justify-center mb-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-wrap gap-3 justify-center mb-12"
+            >
               <Mylink
                 to="toprated"
-                className="bg-[#1B3C53] text-white px-6 py-3 rounded-xl hover:bg-[#234C6A] transition-colors"
+                className="bg-gradient-to-r from-[#1B3C53] to-[#234C6A] text-white px-8 py-3 rounded-xl hover:shadow-lg transition-all duration-300 font-semibold hover:scale-105"
               >
-                Top Rated Providers
+                ⭐ Top Rated Providers
               </Mylink>
               <Mylink
                 to="howworks"
-                className="bg-[#234C6A] text-white px-6 py-3 rounded-xl hover:bg-[#1B3C53] transition-colors"
+                className="bg-gradient-to-r from-[#234C6A] to-[#456882] text-white px-8 py-3 rounded-xl hover:shadow-lg transition-all duration-300 font-semibold hover:scale-105"
               >
-                How It Works
+                📖 How It Works
               </Mylink>
               <Mylink
                 to="testimonials"
-                className="bg-[#456882] text-white px-6 py-3 rounded-xl hover:bg-[#234C6A] transition-colors"
+                className="bg-gradient-to-r from-[#456882] to-[#0F172A] text-white px-8 py-3 rounded-xl hover:shadow-lg transition-all duration-300 font-semibold hover:scale-105"
               >
-                Testimonials
+                💬 Testimonials
               </Mylink>
-            </div>
+            </motion.div>
 
             {loading ? (
               <div className="py-20 flex items-center justify-center">
-                <DotLoader size={60} color="#234C6A" />
+                <DotLoader size={60} color="#1B3C53" />
               </div>
             ) : (
               <>
@@ -833,29 +1046,36 @@ const Home = () => {
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true }}
-                  className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+                  className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12"
                 >
                   {skill.slice(0, 6).map((s, idx) => (
                     <motion.div
                       key={s.skillId}
                       variants={fadeInUp}
+                      whileHover={{ y: -5 }}
                     >
                       <Skillcard skill={s} />
                     </motion.div>
                   ))}
                 </motion.div>
 
-                <div className="text-center mt-12">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="text-center"
+                >
                   <Link to="/all-skills">
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
+                      whileHover={{ scale: 1.08 }}
                       whileTap={{ scale: 0.95 }}
-                      className="bg-gradient-to-r from-[#1B3C53] to-[#234C6A] text-white font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                      className="bg-gradient-to-r from-[#1B3C53] to-[#234C6A] text-white font-bold px-12 py-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 text-lg"
                     >
-                      View All Skills
+                      View All Skills →
                     </motion.button>
                   </Link>
-                </div>
+                </motion.div>
               </>
             )}
           </section>

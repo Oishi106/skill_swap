@@ -1,43 +1,111 @@
-// src/pages/TopRatedProviders.jsx
 import Mycontainer from "../components/Mycontainer";
 import useData from "../hooks/useData";
 import Skillcard from "../components/Skillcard";
 import { DotLoader } from "react-spinners";
+import { FaStar, FaCrown, FaFireAlt } from "react-icons/fa";
 
 const Toprated = () => {
   const { skill, loading } = useData();
 
-  // Filter & sort by rating desc
   const topRated = !loading
-    ? skill.filter((s) => Number(s.rating) >= 4.8).sort((a, b) => b.rating - a.rating)
+    ? skill
+        .filter((s) => Number(s.rating) >= 4.8)
+        .sort((a, b) => b.rating - a.rating)
     : [];
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100">
       <Mycontainer>
-        <div className="text-center my-8 md:my-12 space-y-3">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-            Top Rated Providers
-          </h1>
-          <p className="text-base text-gray-600">
-            Only courses with rating <span className="font-semibold">4.8+</span>
-          </p>
-        </div>
 
+        {/* HERO HEADER */}
+        <section className="text-center py-14 md:py-20 space-y-4">
+          <div className="flex justify-center">
+            <div className="flex items-center gap-2 bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full text-sm font-semibold">
+              <FaCrown />
+              Elite Providers Only
+            </div>
+          </div>
+
+          <h1 className="text-3xl md:text-5xl font-extrabold text-[#1B3C53] leading-tight">
+            Top Rated{" "}
+            <span className="text-[#BF124D]">Skill Providers</span>
+          </h1>
+
+          <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg">
+            Discover highly trusted mentors with exceptional ratings (4.8+).
+            Learn from the best in the community.
+          </p>
+
+          <div className="flex justify-center gap-3 text-sm text-gray-600">
+            <span className="flex items-center gap-1">
+              <FaStar className="text-yellow-500" /> Verified Ratings
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1">
+              <FaFireAlt className="text-red-500" /> Top Performers
+            </span>
+          </div>
+        </section>
+
+        {/* LOADING */}
         {loading ? (
-          <div className="py-16 flex items-center justify-center">
-            <DotLoader size={30} />
+          <div className="py-24 flex flex-col items-center justify-center gap-4">
+            <DotLoader size={60} color="#1B3C53" />
+            <p className="text-gray-500">Loading top rated providers...</p>
           </div>
         ) : topRated.length === 0 ? (
-          <div className="py-16 text-center text-gray-500">
-            No top-rated courses found yet. Check back soon!
+          /* EMPTY STATE */
+          <div className="py-24 text-center">
+            <div className="text-6xl mb-4">⭐</div>
+            <h2 className="text-xl font-bold text-gray-700">
+              No top-rated providers yet
+            </h2>
+            <p className="text-gray-500 mt-2">
+              Check back later as new experts join the platform.
+            </p>
           </div>
         ) : (
-          <section className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 md:gap-8 pb-12">
-            {topRated.map((s) => (
-              <Skillcard key={s.skillId} skill={s} />
-            ))}
-          </section>
+          <>
+            {/* GRID HEADER */}
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg md:text-xl font-bold text-[#1B3C53]">
+                Showing {topRated.length} Elite Providers
+              </h2>
+
+              <span className="text-sm text-gray-500 bg-white px-3 py-1 rounded-full shadow-sm">
+                Sorted by rating
+              </span>
+            </div>
+
+            {/* CARDS GRID */}
+            <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-16">
+              {topRated.map((s, index) => (
+                <div
+                  key={s.skillId}
+                  className="relative group"
+                >
+                  {/* rank badge */}
+                  <div className="absolute -top-3 -left-3 z-10 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                    #{index + 1}
+                  </div>
+
+                  {/* glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-100 to-pink-100 rounded-2xl blur-xl opacity-0 group-hover:opacity-40 transition"></div>
+
+                  <div className="relative">
+                    <Skillcard skill={s} />
+                  </div>
+                </div>
+              ))}
+            </section>
+
+            {/* FOOTER NOTE */}
+            <div className="text-center pb-12">
+              <p className="text-sm text-gray-500">
+                Ratings are based on community feedback and verified reviews.
+              </p>
+            </div>
+          </>
         )}
       </Mycontainer>
     </main>
