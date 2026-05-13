@@ -25,16 +25,16 @@ const Footer = () => {
               Connecting learners and professionals to share skills and grow together.
             </p>
             <div className="flex gap-4 mt-6">
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition text-lg">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-cyan-400 transition text-lg">
                 <FaFacebook />
               </a>
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition text-lg">
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-cyan-400 transition text-lg">
                 <FaTwitter />
               </a>
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition text-lg">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-cyan-400 transition text-lg">
                 <FaLinkedin />
               </a>
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition text-lg">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-cyan-400 transition text-lg">
                 <FaInstagram />
               </a>
             </div>
@@ -44,18 +44,18 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-bold text-white mb-6">Services</h3>
             <div className="space-y-3">
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition block">
+              <Link to="/all-skills" className="text-slate-400 hover:text-cyan-400 transition block">
                 Learn Skills
-              </a>
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition block">
+              </Link>
+              <Link to="/add-skill" className="text-slate-400 hover:text-cyan-400 transition block">
                 Teach Skills
-              </a>
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition block">
+              </Link>
+              <Link to="/all-skills" className="text-slate-400 hover:text-cyan-400 transition block">
                 Find Experts
-              </a>
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition block">
-                Pricing Plans
-              </a>
+              </Link>
+              <Link to="/toprated" className="text-slate-400 hover:text-cyan-400 transition block">
+                Top Rated
+              </Link>
             </div>
           </div>
 
@@ -63,12 +63,12 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-bold text-white mb-6">Company</h3>
             <div className="space-y-3">
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition block">
+              <Link to="/about-us" className="text-slate-400 hover:text-cyan-400 transition block">
                 About Us
-              </a>
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition block">
-                Blog
-              </a>
+              </Link>
+              <Link to="/howworks" className="text-slate-400 hover:text-cyan-400 transition block">
+                How It Works
+              </Link>
               <a href="#" className="text-slate-400 hover:text-cyan-400 transition block">
                 Careers
               </a>
@@ -82,18 +82,18 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-bold text-white mb-6">Support</h3>
             <div className="space-y-3">
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition block">
+              <Link to="/support" className="text-slate-400 hover:text-cyan-400 transition block">
                 Help Center
-              </a>
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition block">
+              </Link>
+              <Link to="/support" className="text-slate-400 hover:text-cyan-400 transition block">
                 Contact Us
-              </a>
+              </Link>
               <a href="#" className="text-slate-400 hover:text-cyan-400 transition block">
                 FAQ
               </a>
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition block">
+              <Link to="/support" className="text-slate-400 hover:text-cyan-400 transition block">
                 Community
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -128,7 +128,7 @@ const Footer = () => {
           </div>
 
           {/* Bottom Links */}
-          <div className="flex justify-center gap-6 text-sm">
+          <div className="flex justify-center gap-6 text-sm flex-wrap">
             <a href="#" className="text-slate-400 hover:text-cyan-400 transition">
               Terms of Service
             </a>
