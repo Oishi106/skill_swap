@@ -24,6 +24,22 @@ export const router=createBrowserRouter([
         element:<Privateroute><Dashboard></Dashboard></Privateroute>
     },
     {
+        path:'my-bookings',
+        element:<Privateroute><Dashboard></Dashboard></Privateroute>
+    },
+    {
+        path:'saved-skills',
+        element:<Privateroute><Dashboard></Dashboard></Privateroute>
+    },
+    {
+        path:'add-skill',
+        element:<Privateroute><Dashboard></Dashboard></Privateroute>
+    },
+    {
+        path:'settings',
+        element:<Privateroute><Dashboard></Dashboard></Privateroute>
+    },
+    {
         path:'/',
         element:<Layout></Layout>,
         children:[

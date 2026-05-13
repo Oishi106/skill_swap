@@ -1,101 +1,117 @@
-import {
-  collection,
-  addDoc,
-  query,
-  where,
-  getDocs,
-  deleteDoc,
-  doc,
-  serverTimestamp,
-} from "firebase/firestore";
-import { db } from "../Firebase/firebase.config";
+const SAVED_KEY = "skillswap.savedSkills";
+const BOOKINGS_KEY = "skillswap.bookings";
 
-/* ---------------- BOOKINGS ---------------- */
+const normalizeKey = (value) =>
+  (value || "guest")
+    .toString()
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_");
 
-export const addBookingForUser = async (email, booking) => {
+const getUserKey = (baseKey, email) =>
+  `${baseKey}.${normalizeKey(email)}`;
+
+const readList = (storageKey) => {
+  if (typeof window === "undefined") return [];
   try {
-    const docRef = await addDoc(collection(db, "bookings"), {
-      userEmail: email,
-      skillId: Number(booking.skillId),
-      skillName: booking.skillName,
-      providerName: booking.providerName,
-      image: booking.image,
-      category: booking.category,
-      bookedAt: serverTimestamp(),
-      status: "pending",
-    });
-
-    return { id: docRef.id, ...booking };
-  } catch (err) {
-    console.error(err);
-    return null;
+    return JSON.parse(localStorage.getItem(storageKey)) || [];
+  } catch {
+    return [];
   }
 };
 
-export const getBookingsListForUser = async (email) => {
-  const q = query(
-    collection(db, "bookings"),
-    where("userEmail", "==", email)
-  );
-
-  const snap = await getDocs(q);
-
-  return snap.docs.map((d) => ({
-    bookingId: d.id,
-    ...d.data(),
-  }));
+const writeList = (storageKey, value) => {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(storageKey, JSON.stringify(value));
 };
 
-export const removeBookingForUser = async (bookingId) => {
-  await deleteDoc(doc(db, "bookings", bookingId));
-};
+const normalizeSkill = (skill) => ({
+  skillId: Number(skill.skillId),
+  skillName: skill.skillName,
+  providerName: skill.providerName,
+  providerEmail: skill.providerEmail,
+  price: skill.price,
+  rating: skill.rating,
+  slotsAvailable: skill.slotsAvailable,
+  description: skill.description,
+  image: skill.image,
+  category: skill.category,
+});
 
-/* ---------------- SAVED SKILLS ---------------- */
+const getSavedSkillsForUser = (email) =>
+  readList(getUserKey(SAVED_KEY, email));
 
-export const toggleSavedSkillForUser = async (email, skill) => {
-  const q = query(
-    collection(db, "savedSkills"),
-    where("userEmail", "==", email),
-    where("skillId", "==", Number(skill.skillId))
+const getBookingsForUser = (email) =>
+  readList(getUserKey(BOOKINGS_KEY, email));
+
+export const getSavedSkillsListForUser = getSavedSkillsForUser;
+export const getBookingsListForUser = getBookingsForUser;
+
+export const hasSavedSkillForUser = (email, skill) =>
+  getSavedSkillsForUser(email).some(
+    (item) => Number(item.skillId) === Number(skill?.skillId)
   );
 
-  const snap = await getDocs(q);
+export const toggleSavedSkillForUser = (email, skill) => {
+  const key = getUserKey(SAVED_KEY, email);
+  const list = getSavedSkillsForUser(email);
 
-  // if exists → remove
-  if (!snap.empty) {
-    await deleteDoc(doc(db, "savedSkills", snap.docs[0].id));
+  const exists = list.some(
+    (item) => Number(item.skillId) === Number(skill.skillId)
+  );
+
+  if (exists) {
+    const updated = list.filter(
+      (item) => Number(item.skillId) !== Number(skill.skillId)
+    );
+    writeList(key, updated);
     return false;
   }
 
-  // else add
-  await addDoc(collection(db, "savedSkills"), {
-    userEmail: email,
-    skillId: Number(skill.skillId),
-    skillName: skill.skillName,
-    providerName: skill.providerName,
-    image: skill.image,
-    category: skill.category,
-    savedAt: serverTimestamp(),
-  });
-
+  writeList(key, [...list, normalizeSkill(skill)]);
   return true;
 };
 
-export const getSavedSkillsListForUser = async (email) => {
-  const q = query(
-    collection(db, "savedSkills"),
-    where("userEmail", "==", email)
+export const addBookingForUser = (email, booking) => {
+  const key = getUserKey(BOOKINGS_KEY, email);
+  const list = getBookingsForUser(email);
+
+  const exists = list.some(
+    (item) => Number(item.skillId) === Number(booking.skillId)
   );
 
-  const snap = await getDocs(q);
+  if (exists) return null;
 
-  return snap.docs.map((d) => ({
-    skillId: d.data().skillId,
-    ...d.data(),
-    savedId: d.id,
-  }));
+  const newBooking = {
+    ...normalizeSkill(booking),
+    bookedByName: booking.name,
+    bookedByEmail: booking.email,
+    bookedAt: new Date().toISOString(),
+    bookingId: `${booking.skillId}-${Date.now()}`,
+  };
+
+  writeList(key, [...list, newBooking]);
+  return newBooking;
 };
 
-export const removeSavedSkillForUser = async (savedId) => {
-  await deleteDoc(doc(db, "savedSkills", savedId));
+export const removeBookingForUser = (email, bookingId) => {
+  const key = getUserKey(BOOKINGS_KEY, email);
+  const list = getBookingsForUser(email);
+
+  const updated = list.filter((item) => item.bookingId !== bookingId);
+
+  writeList(key, updated);
+  return updated;
+};
+
+export const removeSavedSkillForUser = (email, skillId) => {
+  const key = getUserKey(SAVED_KEY, email);
+  const list = getSavedSkillsForUser(email);
+
+  const updated = list.filter(
+    (item) => Number(item.skillId) !== Number(skillId)
+  );
+
+  writeList(key, updated);
+  return updated;
 };

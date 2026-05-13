@@ -4,28 +4,24 @@ import { updateProfile } from "firebase/auth";
 import { auth } from "../Firebase/firebase.config";
 import { toast } from "react-toastify";
 import useData from "../hooks/useData";
-import { Link, Outlet, useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
 
 import {
   getBookingsListForUser,
   getSavedSkillsListForUser,
   removeBookingForUser,
-  removeSavedSkillForUser,
 } from "../utils/skillStorage";
 
 import {
   FaBookmark,
   FaCalendarCheck,
   FaGraduationCap,
-  FaUsers,
-  FaStar,
   FaChartLine,
-  FaArrowRight,
   FaHome,
   FaCog,
   FaPlusCircle,
-  FaSignOutAlt,
   FaBars,
+  FaTrash,
 } from "react-icons/fa";
 
 const Dashboard = () => {
@@ -33,167 +29,106 @@ const Dashboard = () => {
   const { skill } = useData();
   const location = useLocation();
 
-  const [name, setName] = useState(info?.displayName || "");
-  const [photoURL, setPhotoURL] = useState(info?.photoURL || "");
+  const [name, setName] = useState("");
+  const [photoURL, setPhotoURL] = useState("");
   const [savedSkills, setSavedSkills] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [saving, setSaving] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [removingId, setRemovingId] = useState(null);
 
   useEffect(() => {
     if (!info?.email) return;
 
-    setSavedSkills(getSavedSkillsListForUser(info.email));
-    setBookings(getBookingsListForUser(info.email));
-
     setName(info.displayName || "");
     setPhotoURL(info.photoURL || "");
+
+    // এগুলোর ডিফল্ট ভ্যালু হিসেবে খালি অ্যারে [] রাখা নিরাপদ
+    setSavedSkills(getSavedSkillsListForUser(info.email) || []);
+    setBookings(getBookingsListForUser(info.email) || []);
   }, [info]);
-
-  const recommendationPool = useMemo(() => {
-    const excludedIds = new Set([
-      ...savedSkills.map((item) => Number(item.skillId)),
-      ...bookings.map((item) => Number(item.skillId)),
-    ]);
-
-    return skill
-      .filter((item) => !excludedIds.has(Number(item.skillId)))
-      .slice(0, 4);
-  }, [skill, savedSkills, bookings]);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-
     if (!auth.currentUser) return;
 
     setSaving(true);
-
     try {
       await updateProfile(auth.currentUser, {
-        displayName: name.trim(),
-        photoURL: photoURL.trim() || null,
+        displayName: name,
+        photoURL: photoURL,
       });
 
-      const nextInfo = {
+      setInfo({
         ...info,
-        displayName: name.trim(),
-        photoURL: photoURL.trim() || null,
-      };
+        displayName: name,
+        photoURL,
+      });
 
-      setInfo(nextInfo);
-
-      toast.success("Profile updated successfully.");
-    } catch (error) {
-      toast.error(error?.message || "Update failed.");
+      toast.success("Profile updated successfully!");
+    } catch (err) {
+      toast.error(err.message);
     } finally {
       setSaving(false);
     }
   };
 
   const handleRemoveBooking = (bookingId) => {
-    const nextBookings = removeBookingForUser(info?.email, bookingId);
-
-    setBookings(nextBookings);
-
-    toast.success("Booking removed.");
-  };
-
-  const handleRemoveSaved = (skillId) => {
-    const nextSavedSkills = removeSavedSkillForUser(
-      info?.email,
-      skillId
-    );
-
-    setSavedSkills(nextSavedSkills);
-
-    toast.success("Saved skill removed.");
+    setRemovingId(bookingId);
+    try {
+      removeBookingForUser(info.email, bookingId);
+      const updated = getBookingsListForUser(info.email) || [];
+      setBookings(updated);
+      toast.success("Booking cancelled successfully!");
+    } catch (err) {
+      toast.error("Failed to cancel booking");
+    } finally {
+      setRemovingId(null);
+    }
   };
 
   if (!info) return null;
 
   const menuItems = [
-    {
-      name: "Dashboard",
-      path: "/dashboard",
-      icon: <FaHome />,
-    },
-    {
-      name: "All Skills",
-      path: "/all-skills",
-      icon: <FaGraduationCap />,
-    },
-    {
-      name: "My Bookings",
-      path: "/my-bookings",
-      icon: <FaCalendarCheck />,
-    },
-    {
-      name: "Saved Skills",
-      path: "/saved-skills",
-      icon: <FaBookmark />,
-    },
-    {
-      name: "Add Skill",
-      path: "/add-skill",
-      icon: <FaPlusCircle />,
-    },
-    {
-      name: "Settings",
-      path: "/settings",
-      icon: <FaCog />,
-    },
+    { name: "Dashboard", path: "/dashboard", icon: <FaHome /> },
+    { name: "All Skills", path: "/all-skills", icon: <FaGraduationCap /> },
+    { name: "My Bookings", path: "/my-bookings", icon: <FaCalendarCheck /> },
+    { name: "Saved Skills", path: "/saved-skills", icon: <FaBookmark /> },
+    { name: "Add Skill", path: "/add-skill", icon: <FaPlusCircle /> },
+    { name: "Settings", path: "/settings", icon: <FaCog /> },
   ];
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA] flex">
+    <div className="min-h-screen flex bg-gray-50 text-slate-800">
       {/* SIDEBAR */}
       <aside
-        className={`fixed z-50 top-0 left-0 h-screen w-[290px] bg-[#0F172A] text-white shadow-2xl transition-all duration-300 lg:translate-x-0 ${
+        className={`fixed z-50 w-[280px] h-screen bg-[#0F172A] text-white transition-transform duration-300 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        } lg:translate-x-0`}
       >
-        {/* LOGO */}
-        <div className="border-b border-white/10 p-7">
-          <h1 className="text-3xl font-black tracking-wide">
-            SkillSwap
-          </h1>
-
-          <p className="mt-2 text-sm text-slate-400">
-            Professional Dashboard
-          </p>
+        <div className="p-7 border-b border-white/10">
+          <h1 className="text-3xl font-black tracking-tight text-cyan-400">SkillSwap</h1>
         </div>
 
-        {/* PROFILE */}
-        <div className="flex flex-col items-center border-b border-white/10 p-7">
+        <div className="p-8 text-center border-b border-white/5">
           <img
-            src={
-              photoURL ||
-              info?.photoURL ||
-              "/placeholder-user.png"
-            }
-            alt={info?.displayName}
-            className="h-24 w-24 rounded-full border-4 border-cyan-500 object-cover"
+            src={photoURL || "https://via.placeholder.com/150"}
+            className="w-24 h-24 rounded-full mx-auto border-4 border-cyan-500/30 object-cover shadow-xl"
+            alt="profile"
           />
-
-          <h2 className="mt-4 text-xl font-bold">
-            {info?.displayName}
-          </h2>
-
-          <p className="text-sm text-slate-400">
-            {info?.email}
-          </p>
+          <h2 className="mt-4 text-xl font-bold truncate">{name || "User Name"}</h2>
+          <p className="text-sm text-slate-400 truncate">{info?.email}</p>
         </div>
 
-        {/* MENU */}
-        <nav className="mt-5 flex flex-col gap-2 px-4">
+        <nav className="mt-6 px-4 space-y-2">
           {menuItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center gap-4 rounded-2xl px-5 py-4 text-[15px] font-medium transition-all duration-300 ${
+              className={`flex items-center gap-4 px-5 py-4 rounded-2xl font-medium transition-all ${
                 location.pathname === item.path
-                  ? "bg-cyan-500 text-white shadow-lg"
-                  : "text-slate-300 hover:bg-white/10 hover:text-white"
+                  ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/20"
+                  : "hover:bg-white/5 text-slate-400 hover:text-white"
               }`}
             >
               <span className="text-lg">{item.icon}</span>
@@ -201,256 +136,144 @@ const Dashboard = () => {
             </Link>
           ))}
         </nav>
-
-        {/* LOGOUT */}
-        <div className="absolute bottom-0 left-0 w-full p-5">
-          <button className="flex w-full items-center justify-center gap-3 rounded-2xl bg-red-500 px-5 py-4 font-semibold transition hover:bg-red-600">
-            <FaSignOutAlt />
-            Logout
-          </button>
-        </div>
       </aside>
 
       {/* MAIN CONTENT */}
-      <div className="flex-1 lg:ml-[290px]">
-        {/* TOPBAR */}
-        <header className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white px-6 py-5 shadow-sm">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="rounded-xl bg-slate-100 p-3 text-slate-700 lg:hidden"
-            >
-              <FaBars />
-            </button>
-
-            <div>
-              <h1 className="text-2xl font-bold text-slate-800">
-                Dashboard Overview
-              </h1>
-
-              <p className="text-sm text-slate-500">
-                Welcome back 👋
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <img
-              src={
-                photoURL ||
-                info?.photoURL ||
-                "/placeholder-user.png"
-              }
-              alt={info?.displayName}
-              className="h-12 w-12 rounded-full object-cover"
-            />
-          </div>
+      <main className="flex-1 lg:ml-[280px] p-6 lg:p-10">
+        <header className="flex justify-between items-center mb-8">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="lg:hidden p-2 text-2xl bg-white rounded-lg shadow-sm"
+          >
+            <FaBars />
+          </button>
+          <h2 className="text-2xl font-bold text-slate-800">Overview</h2>
         </header>
 
-        {/* CONTENT */}
-        <main className="p-6">
-          {/* STATS */}
-          <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-            <div className="rounded-[30px] bg-white p-6 shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-slate-500">
-                    Total Bookings
-                  </p>
+        {/* STATS CARDS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { label: "Bookings", val: bookings.length, icon: <FaCalendarCheck className="text-blue-500" /> },
+            { label: "Saved Skills", val: savedSkills.length, icon: <FaBookmark className="text-pink-500" /> },
+            { label: "Account Status", val: "Active", icon: <FaGraduationCap className="text-green-500" /> },
+            { label: "Skill Growth", val: "+24%", icon: <FaChartLine className="text-cyan-500" /> },
+          ].map((stat, index) => (
+            <div key={index} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+              <div className="text-2xl mb-4">{stat.icon}</div>
+              <p className="text-slate-500 font-medium text-sm">{stat.label}</p>
+              <h3 className="text-2xl font-bold text-slate-900 mt-1">{stat.val}</h3>
+            </div>
+          ))}
+        </div>
 
-                  <h2 className="mt-2 text-4xl font-black text-slate-800">
-                    {bookings.length}
-                  </h2>
-                </div>
+        {/* PROFILE SECTION */}
+        <div className="mt-10 bg-white p-8 rounded-3xl shadow-sm border border-slate-100 max-w-2xl">
+          <h2 className="text-2xl font-bold mb-6 text-slate-800">Profile Settings</h2>
 
-                <div className="rounded-2xl bg-cyan-100 p-4 text-3xl text-cyan-600">
-                  <FaCalendarCheck />
-                </div>
-              </div>
+          <form onSubmit={handleUpdate} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-600 ml-1">Full Name</label>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 outline-none transition-all text-slate-900"
+                placeholder="Enter your name"
+              />
             </div>
 
-            <div className="rounded-[30px] bg-white p-6 shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-slate-500">
-                    Saved Skills
-                  </p>
-
-                  <h2 className="mt-2 text-4xl font-black text-slate-800">
-                    {savedSkills.length}
-                  </h2>
-                </div>
-
-                <div className="rounded-2xl bg-pink-100 p-4 text-3xl text-pink-600">
-                  <FaBookmark />
-                </div>
-              </div>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-600 ml-1">Photo URL</label>
+              <input
+                value={photoURL}
+                onChange={(e) => setPhotoURL(e.target.value)}
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 outline-none transition-all text-slate-900"
+                placeholder="https://example.com/photo.jpg"
+              />
             </div>
 
-            <div className="rounded-[30px] bg-white p-6 shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-slate-500">
-                    Learning Status
-                  </p>
+            <button 
+              disabled={saving}
+              className="w-full md:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold px-10 py-4 rounded-2xl transition-all shadow-lg active:scale-95 disabled:opacity-50"
+            >
+              {saving ? "Updating..." : "Save Changes"}
+            </button>
+          </form>
+        </div>
 
-                  <h2 className="mt-2 text-4xl font-black text-slate-800">
-                    Active
-                  </h2>
-                </div>
+        {/* MY BOOKINGS SECTION */}
+        <div className="mt-10 bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+          <h2 className="text-2xl font-bold mb-6 text-slate-800">My Bookings</h2>
 
-                <div className="rounded-2xl bg-yellow-100 p-4 text-3xl text-yellow-600">
-                  <FaGraduationCap />
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-[30px] bg-white p-6 shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-slate-500">
-                    Skill Growth
-                  </p>
-
-                  <h2 className="mt-2 text-4xl font-black text-slate-800">
-                    +24%
-                  </h2>
-                </div>
-
-                <div className="rounded-2xl bg-green-100 p-4 text-3xl text-green-600">
-                  <FaChartLine />
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* MAIN GRID */}
-          <section className="mt-8 grid gap-8 xl:grid-cols-[1.5fr_0.9fr]">
-            {/* BOOKINGS */}
-            <div className="rounded-[35px] bg-white p-7 shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-3xl font-bold text-slate-800">
-                    Upcoming Sessions
-                  </h2>
-
-                  <p className="mt-1 text-slate-500">
-                    Your booked sessions
-                  </p>
-                </div>
-
-                <FaUsers className="text-3xl text-slate-400" />
-              </div>
-
-              <div className="mt-8 space-y-5">
-                {bookings.length ? (
-                  bookings.map((booking) => (
-                    <div
-                      key={booking.bookingId}
-                      className="flex flex-col gap-5 rounded-3xl border border-slate-200 p-5 transition hover:shadow-xl lg:flex-row lg:items-center lg:justify-between"
-                    >
-                      <div className="flex items-center gap-5">
-                        <img
-                          src={booking.image}
-                          alt={booking.skillName}
-                          className="h-20 w-20 rounded-2xl object-cover"
-                        />
-
-                        <div>
-                          <h3 className="text-xl font-bold text-slate-800">
-                            {booking.skillName}
-                          </h3>
-
-                          <p className="text-slate-500">
-                            {booking.providerName}
-                          </p>
-
-                          <p className="text-sm text-slate-400">
-                            {booking.category}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex gap-3">
-                        <Link
-                          to={`/details/${booking.skillId}`}
-                          className="rounded-xl bg-slate-100 px-5 py-3 font-medium transition hover:bg-slate-200"
-                        >
-                          View
-                        </Link>
-
-                        <button
-                          onClick={() =>
-                            handleRemoveBooking(
-                              booking.bookingId
-                            )
-                          }
-                          className="rounded-xl bg-red-500 px-5 py-3 font-medium text-white transition hover:bg-red-600"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="rounded-3xl border border-dashed border-slate-300 p-10 text-center text-slate-500">
-                    No bookings found.
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* PROFILE */}
-            <div className="rounded-[35px] bg-white p-7 shadow-lg">
-              <h2 className="text-3xl font-bold text-slate-800">
-                Profile Settings
-              </h2>
-
-              <form
-                onSubmit={handleUpdate}
-                className="mt-8 space-y-5"
+          {bookings.length === 0 ? (
+            <div className="text-center py-12">
+              <FaCalendarCheck className="text-6xl text-slate-200 mx-auto mb-4" />
+              <p className="text-slate-500 text-lg">No bookings yet</p>
+              <p className="text-slate-400 text-sm mt-2">Explore skills and book your first session</p>
+              <Link 
+                to="/all-skills"
+                className="inline-block mt-4 bg-cyan-500 hover:bg-cyan-600 text-white font-bold px-8 py-3 rounded-2xl transition-all"
               >
-                <div>
-                  <label className="mb-2 block font-medium text-slate-700">
-                    Display Name
-                  </label>
-
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) =>
-                      setName(e.target.value)
-                    }
-                    className="input input-bordered w-full bg-slate-50"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2 block font-medium text-slate-700">
-                    Photo URL
-                  </label>
-
-                  <input
-                    type="text"
-                    value={photoURL}
-                    onChange={(e) =>
-                      setPhotoURL(e.target.value)
-                    }
-                    className="input input-bordered w-full bg-slate-50"
-                  />
-                </div>
-
-                <button
-                  disabled={saving}
-                  className="w-full rounded-2xl bg-gradient-to-r from-[#0F172A] to-[#334155] py-4 font-semibold text-white"
-                >
-                  {saving ? "Saving..." : "Save Changes"}
-                </button>
-              </form>
+                Browse Skills
+              </Link>
             </div>
-          </section>
-        </main>
-      </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b-2 border-slate-200">
+                    <th className="text-left py-4 px-4 font-bold text-slate-700">Skill</th>
+                    <th className="text-left py-4 px-4 font-bold text-slate-700">Provider</th>
+                    <th className="text-left py-4 px-4 font-bold text-slate-700">Price</th>
+                    <th className="text-left py-4 px-4 font-bold text-slate-700">Booked At</th>
+                    <th className="text-center py-4 px-4 font-bold text-slate-700">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookings.map((booking) => (
+                    <tr key={booking.bookingId} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                      <td className="py-4 px-4">
+                        <div className="flex items-center gap-3">
+                          <img 
+                            src={booking.image} 
+                            alt={booking.skillName}
+                            className="w-12 h-12 rounded-lg object-cover"
+                          />
+                          <div>
+                            <p className="font-bold text-slate-900">{booking.skillName}</p>
+                            <p className="text-xs text-slate-500">{booking.category}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-4 px-4">
+                        <p className="font-semibold text-slate-900">{booking.providerName}</p>
+                        <p className="text-xs text-slate-500">{booking.providerEmail}</p>
+                      </td>
+                      <td className="py-4 px-4">
+                        <p className="font-bold text-cyan-600">${booking.price}</p>
+                      </td>
+                      <td className="py-4 px-4">
+                        <p className="text-sm text-slate-600">
+                          {new Date(booking.bookedAt).toLocaleDateString()}
+                        </p>
+                      </td>
+                      <td className="py-4 px-4 text-center">
+                        <button
+                          onClick={() => handleRemoveBooking(booking.bookingId)}
+                          disabled={removingId === booking.bookingId}
+                          className="inline-flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 font-semibold px-4 py-2 rounded-xl transition-all disabled:opacity-50"
+                        >
+                          <FaTrash className="text-sm" />
+                          {removingId === booking.bookingId ? "Removing..." : "Cancel"}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </main>
     </div>
   );
 };
