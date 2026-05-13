@@ -16,20 +16,20 @@ import Support from "../Pages/Support";
 
 export const router=createBrowserRouter([
     {
+        path:'dashboard',
+        element:<Privateroute><Dashboard></Dashboard></Privateroute>
+    },
+    {
+        path:'profile',
+        element:<Privateroute><Dashboard></Dashboard></Privateroute>
+    },
+    {
         path:'/',
         element:<Layout></Layout>,
         children:[
             {
                 index:true,
                 element:<Home></Home>
-            },
-            {
-                path:'dashboard',
-                element:<Privateroute><Dashboard></Dashboard></Privateroute>
-            },
-            {
-                path:'profile',
-                element:<Privateroute><Dashboard></Dashboard></Privateroute>
             },
             {
                 path:'details/:skillId',
