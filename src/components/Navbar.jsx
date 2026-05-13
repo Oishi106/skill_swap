@@ -1,4 +1,4 @@
-import React, { use, useContext } from "react";
+import React, { useContext } from "react";
 import Mylink from "./Mylink";
 import { AuthContext } from "../Context/Authcontext";
 import { signOut } from "firebase/auth";
@@ -6,29 +6,26 @@ import { toast } from "react-toastify";
 import { auth } from "../Firebase/firebase.config";
 import { DotLoader } from "react-spinners";
 import { useNavigate } from "react-router";
-import { ToastBar } from "react-hot-toast";
 
 const Navbar = () => {
   const { info, setInfo, loading } = useContext(AuthContext);
   const navigate = useNavigate();
   const handleSignOut = () => {
-    console.log("signout clicked")
     signOut(auth)
       .then(() => {
         setInfo(null);
-        ToastBar("✅ Signed out successfully");
+        toast.success("Signed out successfully");
         navigate("/signin");
       })
       .catch((e) => {
-        ToastBar("Could not sign out. Try again.");
+        toast.error("Could not sign out. Try again.");
       });
-    console.log("signout clicked")
   };
 
   const menuItems = (
     <>
       <li> <Mylink to="/" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">Home</Mylink></li>
-      <li> <Mylink to="/profile" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">My Profile</Mylink></li>
+      <li> <Mylink to="/dashboard" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">Dashboard</Mylink></li>
       <li> <Mylink to="/all-skills" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">All Skills</Mylink></li>
       <li> <Mylink to="/about-us" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">About Us</Mylink></li>
       <li> <Mylink to="/contract" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">Contact</Mylink></li>

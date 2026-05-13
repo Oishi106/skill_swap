@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import Layout from "../Layouts/Layout";
 import Home from "../Pages/Home";
-import Profile from "../Pages/Profile";
+import Dashboard from "../Pages/Dashboard";
 import Viewdetails from "../Pages/Viewdetails";
 import Signin from "../Pages/Signin";
 import Signup from "../Pages/Signup";
@@ -24,8 +24,12 @@ export const router=createBrowserRouter([
                 element:<Home></Home>
             },
             {
+                path:'dashboard',
+                element:<Privateroute><Dashboard></Dashboard></Privateroute>
+            },
+            {
                 path:'profile',
-                element:<Privateroute><Profile></Profile></Privateroute>
+                element:<Privateroute><Dashboard></Dashboard></Privateroute>
             },
             {
                 path:'details/:skillId',

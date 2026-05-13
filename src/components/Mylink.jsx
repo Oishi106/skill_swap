@@ -3,7 +3,16 @@ import { NavLink } from 'react-router'
 
 const Mylink = ({to,children,className}) => {
   return (
-    <NavLink to={to} className={({isActive})=>isActive?"bg-[#234C6A] text-white p-5 rounded-xl font-semibold":`${className} font-semibold`} >{children}</NavLink>
+    <NavLink
+      to={to}
+      className={({isActive}) =>
+        isActive
+          ? `${className || ""} bg-[#234C6A] text-white font-semibold`.trim()
+          : `${className || ""} font-semibold`.trim()
+      }
+    >
+      {children}
+    </NavLink>
   )
 }
 
