@@ -25,10 +25,11 @@ const Navbar = () => {
   const menuItems = (
     <>
       <li> <Mylink to="/" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">Home</Mylink></li>
-      <li> <Mylink to="/dashboard" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">Dashboard</Mylink></li>
       <li> <Mylink to="/all-skills" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">All Skills</Mylink></li>
       <li> <Mylink to="/about-us" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">About Us</Mylink></li>
       <li> <Mylink to="/contract" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">Contact</Mylink></li>
+      <li> <Mylink to="/dashboard" className="px-4 py-5 text-[#1B3C53] rounded-lg hover:bg-[#E3E3E3] transition-colors">Dashboard</Mylink></li>
+
     </>
   );
 
@@ -42,7 +43,7 @@ const Navbar = () => {
 
           <div className="dropdown">
             <div className="flex justify-center items-center">
-              <img className="h-12 w-12 mr-2" src="/logo.png" alt="" />
+              <img className="h-22 w-35 mr-2" src="/logo.png" alt="" />
               <h2 className="font-bold text-2xl md:text-3xl text-[#1B3C53]">SkillSwap</h2>
             </div>
             <ul
