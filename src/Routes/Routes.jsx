@@ -8,7 +8,7 @@ import Signup from "../Pages/Signup";
 import Privateroute from "../Privateroute/Privateroute";
 import Toprated from "../Pages/Toprated";
 import Howitworks from "../Pages/Howitworks";
-import Testimonials from "../Pages/Testimonials ";
+import Testimonials from "../Pages/Testimonials";
 import AllSkills from "../Pages/AllSkills";
 import Aboutus from "../Pages/Aboutus";
 import Contract from "../Pages/Contract";
@@ -88,7 +88,7 @@ export const router=createBrowserRouter([
                 element:<Privateroute><Support></Support></Privateroute>
             },
             {
-                path:'Testimonials',
+                path:'testimonials',
                 element:<Testimonials></Testimonials>
             }
         ]

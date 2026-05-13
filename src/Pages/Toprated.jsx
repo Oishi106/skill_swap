@@ -26,9 +26,8 @@ const Toprated = () => {
             </div>
           </div>
 
-          <h1 className="text-3xl md:text-5xl font-extrabold text-[#1B3C53] leading-tight">
-            Top Rated{" "}
-            <span className="text-[#BF124D]">Skill Providers</span>
+          <h1 className="text-4xl md:text-6xl font-black leading-tight">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-600 via-orange-500 to-red-500">Top Rated</span> Skill <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1B3C53] to-[#234C6A]">Providers</span>
           </h1>
 
           <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg">

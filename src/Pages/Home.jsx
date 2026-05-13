@@ -996,12 +996,12 @@ const Home = () => {
                 whileInView={{ scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="inline-block bg-gradient-to-r from-orange-400/20 to-rose-400/20 text-orange-700 text-sm font-bold px-4 py-2 rounded-full mb-4 border border-orange-400/30"
+                className="inline-block bg-gradient-to-r from-purple-400/20 to-indigo-400/20 text-purple-700 text-sm font-bold px-4 py-2 rounded-full mb-4 border border-purple-400/30"
               >
                 🎯 Latest Opportunities
               </motion.span>
               <h2 className="text-4xl md:text-5xl font-black text-[#0F172A] mb-4">
-                Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-rose-600">Available Skills</span>
+                Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">Available Skills</span>
               </h2>
               <p className="text-gray-700 text-lg max-w-3xl mx-auto">
                 Explore newly listed skills and connect with top-rated providers in your area
@@ -1029,7 +1029,7 @@ const Home = () => {
               </Mylink>
               <Mylink
                 to="testimonials"
-                className="bg-gradient-to-r from-[#456882] to-[#0F172A] text-white px-8 py-3 rounded-xl hover:shadow-lg transition-all duration-300 font-semibold hover:scale-105"
+                className="bg-gradient-to-r from-rose-500 to-pink-600 text-white px-8 py-3 rounded-xl hover:shadow-lg transition-all duration-300 font-semibold hover:scale-105"
               >
                 💬 Testimonials
               </Mylink>
