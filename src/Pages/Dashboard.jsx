@@ -11,6 +11,9 @@ import {
   getSavedSkillsListForUser,
   removeBookingForUser,
   removeSavedSkillForUser,
+  getMySkillsList,
+  addMySkill,
+  removeMySkill,
 } from "../utils/skillStorage";
 
 import {
@@ -38,6 +41,18 @@ const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [removingId, setRemovingId] = useState(null);
   const [removingSavedId, setRemovingSavedId] = useState(null);
+  
+  // Add Skill Form State
+  const [skillForm, setSkillForm] = useState({
+    skillName: "",
+    category: "",
+    price: "",
+    description: "",
+    image: "",
+    slotsAvailable: "",
+  });
+  const [isAddingSkill, setIsAddingSkill] = useState(false);
+  const [mySkills, setMySkills] = useState([]);
 
   useEffect(() => {
     if (!info?.email) return;
@@ -48,6 +63,7 @@ const Dashboard = () => {
     // এগুলোর ডিফল্ট ভ্যালু হিসেবে খালি অ্যারে [] রাখা নিরাপদ
     setSavedSkills(getSavedSkillsListForUser(info.email) || []);
     setBookings(getBookingsListForUser(info.email) || []);
+    setMySkills(getMySkillsList(info.email) || []);
   }, [info]);
 
   const handleUpdate = async (e) => {
@@ -100,6 +116,41 @@ const Dashboard = () => {
       toast.error("Failed to remove skill");
     } finally {
       setRemovingSavedId(null);
+    }
+  };
+
+  const handleAddSkill = (e) => {
+    e.preventDefault();
+    
+    if (!skillForm.skillName || !skillForm.category || !skillForm.price || !skillForm.description || !skillForm.image || !skillForm.slotsAvailable) {
+      toast.error("Please fill all fields");
+      return;
+    }
+
+    setIsAddingSkill(true);
+    try {
+      const newSkill = addMySkill(info.email, {
+        ...skillForm,
+        price: Number(skillForm.price),
+        slotsAvailable: Number(skillForm.slotsAvailable),
+        providerName: info.displayName || "Anonymous",
+      });
+
+      setMySkills([...mySkills, newSkill]);
+      setSkillForm({
+        skillName: "",
+        category: "",
+        price: "",
+        description: "",
+        image: "",
+        slotsAvailable: "",
+      });
+
+      toast.success("Skill added successfully!");
+    } catch (err) {
+      toast.error("Failed to add skill");
+    } finally {
+      setIsAddingSkill(false);
     }
   };
 
@@ -422,10 +473,156 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* ADD SKILL & SETTINGS PLACEHOLDERS */}
-        {(location.pathname === "/add-skill" || location.pathname === "/settings") && (
+        {/* ADD SKILL VIEW */}
+        {location.pathname === "/add-skill" && (
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 max-w-3xl">
+            <h2 className="text-2xl font-bold mb-6 text-slate-800">Share Your Skill</h2>
+
+            <form onSubmit={handleAddSkill} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-600 ml-1">Skill Name *</label>
+                  <input
+                    value={skillForm.skillName}
+                    onChange={(e) => setSkillForm({ ...skillForm, skillName: e.target.value })}
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 outline-none transition-all text-slate-900"
+                    placeholder="e.g., Web Development, Graphic Design"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-600 ml-1">Category *</label>
+                  <select
+                    value={skillForm.category}
+                    onChange={(e) => setSkillForm({ ...skillForm, category: e.target.value })}
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 outline-none transition-all text-slate-900"
+                  >
+                    <option value="">Select Category</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Design">Design</option>
+                    <option value="Business">Business</option>
+                    <option value="Language">Language</option>
+                    <option value="Health">Health</option>
+                    <option value="Arts">Arts</option>
+                    <option value="Music">Music</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-600 ml-1">Price per Session ($) *</label>
+                  <input
+                    type="number"
+                    value={skillForm.price}
+                    onChange={(e) => setSkillForm({ ...skillForm, price: e.target.value })}
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 outline-none transition-all text-slate-900"
+                    placeholder="25"
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-600 ml-1">Available Slots *</label>
+                  <input
+                    type="number"
+                    value={skillForm.slotsAvailable}
+                    onChange={(e) => setSkillForm({ ...skillForm, slotsAvailable: e.target.value })}
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 outline-none transition-all text-slate-900"
+                    placeholder="5"
+                    min="1"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-600 ml-1">Description *</label>
+                <textarea
+                  value={skillForm.description}
+                  onChange={(e) => setSkillForm({ ...skillForm, description: e.target.value })}
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 outline-none transition-all text-slate-900 resize-none"
+                  placeholder="Describe what you'll teach and what students will learn..."
+                  rows="5"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-600 ml-1">Image URL *</label>
+                <input
+                  value={skillForm.image}
+                  onChange={(e) => setSkillForm({ ...skillForm, image: e.target.value })}
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 outline-none transition-all text-slate-900"
+                  placeholder="https://example.com/skill-image.jpg"
+                />
+              </div>
+
+              {skillForm.image && (
+                <div className="flex justify-center">
+                  <img 
+                    src={skillForm.image} 
+                    alt="Skill preview" 
+                    className="w-48 h-32 rounded-xl object-cover shadow-lg"
+                    onError={(e) => {
+                      e.target.src = "https://via.placeholder.com/300x200?text=Invalid+URL";
+                    }}
+                  />
+                </div>
+              )}
+
+              <div className="flex gap-4">
+                <button 
+                  disabled={isAddingSkill}
+                  className="flex-1 bg-cyan-500 hover:bg-cyan-600 text-white font-bold px-10 py-4 rounded-2xl transition-all shadow-lg active:scale-95 disabled:opacity-50"
+                >
+                  {isAddingSkill ? "Publishing..." : "Publish Skill"}
+                </button>
+              </div>
+            </form>
+
+            {mySkills.length > 0 && (
+              <div className="mt-12 pt-8 border-t border-slate-200">
+                <h3 className="text-xl font-bold mb-4 text-slate-800">Your Published Skills</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {mySkills.map((skill) => (
+                    <div key={skill.skillId} className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                      <img 
+                        src={skill.image} 
+                        alt={skill.skillName}
+                        className="w-full h-32 rounded-lg object-cover mb-3"
+                      />
+                      <h4 className="font-bold text-slate-900 mb-1">{skill.skillName}</h4>
+                      <p className="text-xs text-slate-500 mb-2">{skill.category}</p>
+                      <p className="text-sm text-slate-600 line-clamp-2 mb-3">{skill.description}</p>
+                      <div className="flex justify-between items-center mb-3">
+                        <span className="text-cyan-600 font-bold">${skill.price}</span>
+                        <span className="text-xs bg-slate-200 text-slate-700 px-2 py-1 rounded">{skill.slotsAvailable} slots</span>
+                      </div>
+                      <button
+                        onClick={() => {
+                          removeMySkill(info.email, skill.skillId);
+                          setMySkills(mySkills.filter(s => s.skillId !== skill.skillId));
+                          toast.success("Skill removed");
+                        }}
+                        className="w-full bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-2 rounded-lg transition-all"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* SETTINGS VIEW */}
+        {location.pathname === "/settings" && (
           <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-            <p className="text-slate-600 text-lg">Coming soon...</p>
+            <h2 className="text-2xl font-bold mb-6 text-slate-800">Settings</h2>
+            <p className="text-slate-600">Settings page coming soon...</p>
           </div>
         )}
       </main>

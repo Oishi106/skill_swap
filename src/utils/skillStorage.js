@@ -115,3 +115,43 @@ export const removeSavedSkillForUser = (email, skillId) => {
   writeList(key, updated);
   return updated;
 };
+
+// USER CREATED SKILLS MANAGEMENT
+const MY_SKILLS_KEY = "skillswap.mySkills";
+
+const getMySkillsForUser = (email) =>
+  readList(getUserKey(MY_SKILLS_KEY, email));
+
+export const getMySkillsList = getMySkillsForUser;
+
+export const addMySkill = (email, skillData) => {
+  const key = getUserKey(MY_SKILLS_KEY, email);
+  const list = getMySkillsForUser(email);
+
+  const newSkill = {
+    skillId: Date.now(),
+    skillName: skillData.skillName,
+    category: skillData.category,
+    price: skillData.price,
+    description: skillData.description,
+    image: skillData.image,
+    slotsAvailable: skillData.slotsAvailable,
+    rating: skillData.rating || 0,
+    providerName: skillData.providerName,
+    providerEmail: email,
+    createdAt: new Date().toISOString(),
+  };
+
+  writeList(key, [...list, newSkill]);
+  return newSkill;
+};
+
+export const removeMySkill = (email, skillId) => {
+  const key = getUserKey(MY_SKILLS_KEY, email);
+  const list = getMySkillsForUser(email);
+
+  const updated = list.filter((item) => item.skillId !== skillId);
+
+  writeList(key, updated);
+  return updated;
+};
