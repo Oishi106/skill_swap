@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "../Context/Authcontext";
-import { updateProfile } from "firebase/auth";
+import { updateProfile, signOut } from "firebase/auth";
 import { auth } from "../Firebase/firebase.config";
 import { toast } from "react-toastify";
 import useData from "../hooks/useData";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 import {
   getBookingsListForUser,
@@ -26,12 +26,17 @@ import {
   FaPlusCircle,
   FaBars,
   FaTrash,
+  FaSignOutAlt,
+  FaUser,
+  FaBell,
+  FaLock,
 } from "react-icons/fa";
 
 const Dashboard = () => {
   const { info, setInfo } = useContext(AuthContext);
   const { skill } = useData();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [photoURL, setPhotoURL] = useState("");
@@ -159,10 +164,22 @@ const Dashboard = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setInfo(null);
+      toast.success("Logged out successfully!");
+      navigate("/signin");
+    } catch (err) {
+      toast.error("Failed to logout");
+    }
+  };
+
   if (!info) return null;
 
   const menuItems = [
     { name: "Dashboard", path: "/dashboard", icon: <FaHome /> },
+    { name: "My Profile", path: "/my-profile", icon: <FaUser /> },
     { name: "All Skills", path: "/all-skills", icon: <FaGraduationCap /> },
     { name: "My Bookings", path: "/my-bookings", icon: <FaCalendarCheck /> },
     { name: "Saved Skills", path: "/saved-skills", icon: <FaBookmark /> },
@@ -208,6 +225,17 @@ const Dashboard = () => {
             </Link>
           ))}
         </nav>
+
+        {/* LOGOUT BUTTON */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10 bg-[#0F172A]">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 font-semibold px-5 py-4 rounded-2xl transition-all"
+          >
+            <FaSignOutAlt className="text-lg" />
+            Logout
+          </button>
+        </div>
       </aside>
 
       {/* MAIN CONTENT */}
@@ -221,6 +249,7 @@ const Dashboard = () => {
           </button>
           <h2 className="text-2xl font-bold text-slate-800">
             {location.pathname === "/dashboard" && "Overview"}
+            {location.pathname === "/my-profile" && "My Profile"}
             {location.pathname === "/profile" && "Profile Settings"}
             {location.pathname === "/my-bookings" && "My Bookings"}
             {location.pathname === "/saved-skills" && "Saved Skills"}
@@ -478,6 +507,83 @@ const Dashboard = () => {
           </div>
         )}
 
+        {/* MY PROFILE VIEW */}
+        {location.pathname === "/my-profile" && (
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 max-w-2xl">
+            <h2 className="text-2xl font-bold mb-6 text-slate-800">My Profile</h2>
+
+            <form onSubmit={handleUpdate} className="space-y-6">
+              <div className="flex justify-center mb-6">
+                <img
+                  src={photoURL || "https://via.placeholder.com/150"}
+                  className="w-32 h-32 rounded-full object-cover border-4 border-cyan-500/30 shadow-lg"
+                  alt="profile"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-600 ml-1">Email</label>
+                <input
+                  disabled
+                  value={info?.email || ""}
+                  className="w-full px-5 py-4 bg-slate-100 border border-slate-200 rounded-2xl text-slate-600 cursor-not-allowed"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-600 ml-1">Full Name</label>
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 outline-none transition-all text-slate-900"
+                  placeholder="Enter your name"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-600 ml-1">Photo URL</label>
+                <input
+                  value={photoURL}
+                  onChange={(e) => setPhotoURL(e.target.value)}
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 outline-none transition-all text-slate-900"
+                  placeholder="https://example.com/photo.jpg"
+                />
+              </div>
+
+              <div className="flex gap-4">
+                <button 
+                  disabled={saving}
+                  className="flex-1 bg-cyan-500 hover:bg-cyan-600 text-white font-bold px-10 py-4 rounded-2xl transition-all shadow-lg active:scale-95 disabled:opacity-50"
+                >
+                  {saving ? "Updating..." : "Save Changes"}
+                </button>
+              </div>
+            </form>
+
+            <div className="mt-8 pt-8 border-t border-slate-200">
+              <h3 className="text-lg font-bold text-slate-800 mb-4">Account Statistics</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                  <p className="text-sm text-slate-600">Total Bookings</p>
+                  <p className="text-2xl font-bold text-slate-900">{bookings.length}</p>
+                </div>
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                  <p className="text-sm text-slate-600">Saved Skills</p>
+                  <p className="text-2xl font-bold text-slate-900">{savedSkills.length}</p>
+                </div>
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                  <p className="text-sm text-slate-600">Published Skills</p>
+                  <p className="text-2xl font-bold text-slate-900">{mySkills.length}</p>
+                </div>
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                  <p className="text-sm text-slate-600">Member Since</p>
+                  <p className="text-sm font-bold text-slate-900">May 2026</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* ADD SKILL VIEW */}
         {location.pathname === "/add-skill" && (
           <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 max-w-3xl">
@@ -625,9 +731,95 @@ const Dashboard = () => {
 
         {/* SETTINGS VIEW */}
         {location.pathname === "/settings" && (
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-            <h2 className="text-2xl font-bold mb-6 text-slate-800">Settings</h2>
-            <p className="text-slate-600">Settings page coming soon...</p>
+          <div className="max-w-3xl">
+            {/* NOTIFICATION SETTINGS */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 mb-6">
+              <div className="flex items-center gap-3 mb-6">
+                <FaBell className="text-2xl text-blue-500" />
+                <h2 className="text-2xl font-bold text-slate-800">Notification Settings</h2>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
+                  <div>
+                    <p className="font-semibold text-slate-900">Booking Notifications</p>
+                    <p className="text-sm text-slate-600">Get notified when someone books your skill</p>
+                  </div>
+                  <input type="checkbox" defaultChecked className="w-5 h-5 cursor-pointer" />
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
+                  <div>
+                    <p className="font-semibold text-slate-900">Message Notifications</p>
+                    <p className="text-sm text-slate-600">Get notified for new messages</p>
+                  </div>
+                  <input type="checkbox" defaultChecked className="w-5 h-5 cursor-pointer" />
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
+                  <div>
+                    <p className="font-semibold text-slate-900">Email Notifications</p>
+                    <p className="text-sm text-slate-600">Receive updates via email</p>
+                  </div>
+                  <input type="checkbox" defaultChecked className="w-5 h-5 cursor-pointer" />
+                </div>
+              </div>
+            </div>
+
+            {/* PRIVACY SETTINGS */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 mb-6">
+              <div className="flex items-center gap-3 mb-6">
+                <FaLock className="text-2xl text-green-500" />
+                <h2 className="text-2xl font-bold text-slate-800">Privacy Settings</h2>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
+                  <div>
+                    <p className="font-semibold text-slate-900">Profile Visibility</p>
+                    <p className="text-sm text-slate-600">Make your profile visible to other users</p>
+                  </div>
+                  <select className="px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900">
+                    <option>Public</option>
+                    <option>Private</option>
+                    <option>Friends Only</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
+                  <div>
+                    <p className="font-semibold text-slate-900">Show My Skills</p>
+                    <p className="text-sm text-slate-600">Allow others to see your published skills</p>
+                  </div>
+                  <input type="checkbox" defaultChecked className="w-5 h-5 cursor-pointer" />
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
+                  <div>
+                    <p className="font-semibold text-slate-900">Show My Bookings</p>
+                    <p className="text-sm text-slate-600">Allow others to see your bookings</p>
+                  </div>
+                  <input type="checkbox" className="w-5 h-5 cursor-pointer" />
+                </div>
+              </div>
+            </div>
+
+            {/* DANGER ZONE */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-red-200 bg-red-50">
+              <h2 className="text-2xl font-bold text-red-600 mb-6">Danger Zone</h2>
+
+              <button
+                onClick={() => {
+                  if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+                    toast.error("Account deletion coming soon");
+                  }
+                }}
+                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-4 rounded-2xl transition-all"
+              >
+                Delete Account
+              </button>
+              <p className="text-sm text-red-600 mt-3">Permanently delete your account and all associated data</p>
+            </div>
           </div>
         )}
       </main>

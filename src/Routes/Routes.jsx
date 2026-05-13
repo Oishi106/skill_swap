@@ -20,6 +20,10 @@ export const router=createBrowserRouter([
         element:<Privateroute><Dashboard></Dashboard></Privateroute>
     },
     {
+        path:'my-profile',
+        element:<Privateroute><Dashboard></Dashboard></Privateroute>
+    },
+    {
         path:'profile',
         element:<Privateroute><Dashboard></Dashboard></Privateroute>
     },
