@@ -10,6 +10,7 @@ import {
   getBookingsListForUser,
   getSavedSkillsListForUser,
   removeBookingForUser,
+  removeSavedSkillForUser,
 } from "../utils/skillStorage";
 
 import {
@@ -36,6 +37,7 @@ const Dashboard = () => {
   const [saving, setSaving] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [removingId, setRemovingId] = useState(null);
+  const [removingSavedId, setRemovingSavedId] = useState(null);
 
   useEffect(() => {
     if (!info?.email) return;
@@ -84,6 +86,20 @@ const Dashboard = () => {
       toast.error("Failed to cancel booking");
     } finally {
       setRemovingId(null);
+    }
+  };
+
+  const handleRemoveSavedSkill = (skillId) => {
+    setRemovingSavedId(skillId);
+    try {
+      removeSavedSkillForUser(info.email, skillId);
+      const updated = getSavedSkillsListForUser(info.email) || [];
+      setSavedSkills(updated);
+      toast.success("Skill removed from saved!");
+    } catch (err) {
+      toast.error("Failed to remove skill");
+    } finally {
+      setRemovingSavedId(null);
     }
   };
 
@@ -270,6 +286,70 @@ const Dashboard = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+          )}
+        </div>
+
+        {/* SAVED SKILLS SECTION */}
+        <div className="mt-10 bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+          <h2 className="text-2xl font-bold mb-6 text-slate-800">Saved Skills</h2>
+
+          {savedSkills.length === 0 ? (
+            <div className="text-center py-12">
+              <FaBookmark className="text-6xl text-slate-200 mx-auto mb-4" />
+              <p className="text-slate-500 text-lg">No saved skills yet</p>
+              <p className="text-slate-400 text-sm mt-2">Bookmark skills you're interested in</p>
+              <Link 
+                to="/all-skills"
+                className="inline-block mt-4 bg-cyan-500 hover:bg-cyan-600 text-white font-bold px-8 py-3 rounded-2xl transition-all"
+              >
+                Explore Skills
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {savedSkills.map((skill) => (
+                <div key={skill.skillId} className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow border border-slate-200">
+                  <div className="relative">
+                    <img 
+                      src={skill.image} 
+                      alt={skill.skillName}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="absolute top-3 right-3 bg-cyan-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                      ${skill.price}
+                    </div>
+                  </div>
+                  
+                  <div className="p-5">
+                    <h3 className="text-lg font-bold text-slate-900 mb-1">{skill.skillName}</h3>
+                    <p className="text-sm text-slate-600 mb-3">{skill.category}</p>
+                    
+                    <div className="mb-4">
+                      <p className="text-xs text-slate-500 font-semibold mb-1">Provider</p>
+                      <p className="font-semibold text-slate-900">{skill.providerName}</p>
+                      <p className="text-xs text-slate-500">{skill.providerEmail}</p>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Link 
+                        to={`/details/${skill.skillId}`}
+                        className="flex-1 bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-xl transition-all text-center text-sm"
+                      >
+                        View
+                      </Link>
+                      <button
+                        onClick={() => handleRemoveSavedSkill(skill.skillId)}
+                        disabled={removingSavedId === skill.skillId}
+                        className="bg-red-50 hover:bg-red-100 text-red-600 font-bold py-2 px-4 rounded-xl transition-all disabled:opacity-50"
+                        title="Remove from saved"
+                      >
+                        <FaTrash className="text-sm" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
