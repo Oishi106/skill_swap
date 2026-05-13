@@ -30,6 +30,7 @@ import {
   FaUser,
   FaBell,
   FaLock,
+  FaStar,
 } from "react-icons/fa";
 
 const Dashboard = () => {
@@ -331,6 +332,65 @@ const Dashboard = () => {
                       ))}
                     </tbody>
                   </table>
+                </div>
+            )}
+            </div>
+
+            {/* ALL SKILLS SECTION - Dashboard View */}
+            <div className="mt-10 bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-slate-800">Explore Skills</h2>
+                <Link 
+                  to="/all-skills"
+                  className="text-cyan-600 hover:text-cyan-700 font-semibold text-sm"
+                >
+                  View All →
+                </Link>
+              </div>
+
+              {skill.length === 0 ? (
+                <div className="text-center py-12">
+                  <FaGraduationCap className="text-6xl text-slate-200 mx-auto mb-4" />
+                  <p className="text-slate-500 text-lg">No skills available yet</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {skill.slice(0, 8).map((s) => (
+                    <div key={s.skillId} className="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 hover:shadow-lg transition-shadow">
+                      <div className="relative">
+                        <img 
+                          src={s.image} 
+                          alt={s.skillName}
+                          className="w-full h-32 object-cover"
+                        />
+                        <div className="absolute top-2 right-2 bg-cyan-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                          ${s.price}
+                        </div>
+                      </div>
+                      
+                      <div className="p-4">
+                        <h3 className="font-bold text-slate-900 text-sm truncate">{s.skillName}</h3>
+                        <p className="text-xs text-slate-500 mb-1">{s.category}</p>
+                        <p className="text-xs text-slate-600 mb-3 line-clamp-2">{s.description}</p>
+                        
+                        <div className="flex items-center gap-2 mb-3 text-xs text-slate-600">
+                          <FaStar className="text-yellow-400 text-xs" />
+                          <span>{s.rating || 0} rating</span>
+                          <span className="text-slate-400">•</span>
+                          <span>{s.slotsAvailable} slots</span>
+                        </div>
+
+                        <div className="flex gap-2">
+                          <Link 
+                            to={`/details/${s.skillId}`}
+                            className="flex-1 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 px-3 rounded-lg transition-all text-center text-xs"
+                          >
+                            View
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
