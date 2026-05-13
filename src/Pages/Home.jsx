@@ -93,58 +93,233 @@ const Home = () => {
             slidesPerView={1}
             navigation
             pagination={{ clickable: true }}
+            autoplay={{ delay: 5000, disableOnInteraction: false }}
           >
             <SwiperSlide>
-              <div className="relative h-[400px] md:h-[500px]">
+              <div className="relative h-[400px] md:h-[600px] lg:h-[700px]">
                 <img
                   src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
                   alt="Skill Exchange"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#1B3C53]/90 to-[#234C6A]/70" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
-                  <h2 className="text-3xl sm:text-5xl font-bold mb-4">
-                    Share Skills, Grow Together
-                  </h2>
-                  <p className="text-lg md:text-xl text-white/90 max-w-2xl">
-                    Connect with your community and exchange knowledge through meaningful skill sharing
-                  </p>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0F172A]/95 via-[#1B3C53]/85 to-[#234C6A]/70" />
+                
+                {/* Animated accent lines */}
+                <div className="absolute inset-0 opacity-20">
+                  <div className="absolute top-20 left-10 w-32 h-32 bg-cyan-400 rounded-full blur-3xl" />
+                  <div className="absolute bottom-20 right-10 w-40 h-40 bg-blue-500 rounded-full blur-3xl" />
+                </div>
+
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 md:px-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                  >
+                    <span className="inline-block bg-cyan-400/20 text-cyan-300 text-sm font-bold px-4 py-2 rounded-full mb-6 border border-cyan-400/40">
+                      🚀 Welcome to SkillSwap
+                    </span>
+                  </motion.div>
+                  
+                  <motion.h1 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight"
+                  >
+                    Share Skills, <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-300 to-cyan-200">
+                      Grow Together
+                    </span>
+                  </motion.h1>
+                  
+                  <motion.p 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    className="text-lg md:text-xl text-white/90 max-w-3xl mb-8 leading-relaxed"
+                  >
+                    Connect with your community and exchange knowledge through meaningful skill sharing. Learn new abilities, teach what you love, and unlock your potential.
+                  </motion.p>
+
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.5 }}
+                    className="flex flex-col sm:flex-row gap-4 justify-center"
+                  >
+                    <Link 
+                      to="/all-skills"
+                      className="bg-gradient-to-r from-cyan-400 to-blue-500 text-[#0F172A] font-bold px-8 py-4 rounded-lg hover:shadow-lg hover:shadow-cyan-400/50 transition-all duration-300 transform hover:scale-105 text-center"
+                    >
+                      Explore Skills Now
+                    </Link>
+                    <Link 
+                      to="/signup"
+                      className="bg-white/10 border-2 border-white/30 text-white font-bold px-8 py-4 rounded-lg hover:bg-white/20 hover:border-white/50 transition-all duration-300 text-center backdrop-blur-sm"
+                    >
+                      Get Started Free
+                    </Link>
+                  </motion.div>
+
+                  {/* Stats */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.6 }}
+                    className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/20"
+                  >
+                    <div className="text-center">
+                      <p className="text-2xl md:text-3xl font-bold text-cyan-300">500+</p>
+                      <p className="text-white/70 text-sm">Active Skills</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl md:text-3xl font-bold text-cyan-300">10K+</p>
+                      <p className="text-white/70 text-sm">Members</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl md:text-3xl font-bold text-cyan-300">4.9★</p>
+                      <p className="text-white/70 text-sm">Trust Score</p>
+                    </div>
+                  </motion.div>
                 </div>
               </div>
             </SwiperSlide>
+
             <SwiperSlide>
-              <div className="relative h-[400px] md:h-[500px]">
+              <div className="relative h-[400px] md:h-[600px] lg:h-[700px]">
                 <img
                   src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
                   alt="Learning Together"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#1B3C53]/90 to-[#456882]/70" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
-                  <h2 className="text-3xl sm:text-5xl font-bold mb-4">
-                    Learn From Local Experts
-                  </h2>
-                  <p className="text-lg md:text-xl text-white/90 max-w-2xl">
-                    Discover talented individuals in your area ready to share their expertise
-                  </p>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0F172A]/95 via-[#234C6A]/85 to-[#456882]/70" />
+                
+                <div className="absolute inset-0 opacity-20">
+                  <div className="absolute top-20 left-10 w-32 h-32 bg-purple-400 rounded-full blur-3xl" />
+                  <div className="absolute bottom-20 right-10 w-40 h-40 bg-pink-500 rounded-full blur-3xl" />
+                </div>
+
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 md:px-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                  >
+                    <span className="inline-block bg-purple-400/20 text-purple-300 text-sm font-bold px-4 py-2 rounded-full mb-6 border border-purple-400/40">
+                      📚 Learn & Grow
+                    </span>
+                  </motion.div>
+
+                  <motion.h1 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight"
+                  >
+                    Learn From <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-purple-200">
+                      Local Experts
+                    </span>
+                  </motion.h1>
+                  
+                  <motion.p 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    className="text-lg md:text-xl text-white/90 max-w-3xl mb-8 leading-relaxed"
+                  >
+                    Discover talented individuals in your area ready to share their expertise. Connect with passionate teachers and accelerate your learning journey.
+                  </motion.p>
+
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.5 }}
+                    className="flex flex-col sm:flex-row gap-4 justify-center"
+                  >
+                    <Link 
+                      to="/all-skills"
+                      className="bg-gradient-to-r from-purple-400 to-pink-500 text-white font-bold px-8 py-4 rounded-lg hover:shadow-lg hover:shadow-purple-400/50 transition-all duration-300 transform hover:scale-105 text-center"
+                    >
+                      Browse Experts
+                    </Link>
+                    <Link 
+                      to="/"
+                      className="bg-white/10 border-2 border-white/30 text-white font-bold px-8 py-4 rounded-lg hover:bg-white/20 hover:border-white/50 transition-all duration-300 text-center backdrop-blur-sm"
+                    >
+                      Learn More
+                    </Link>
+                  </motion.div>
                 </div>
               </div>
             </SwiperSlide>
+
             <SwiperSlide>
-              <div className="relative h-[400px] md:h-[500px]">
+              <div className="relative h-[400px] md:h-[600px] lg:h-[700px]">
                 <img
                   src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
                   alt="Teach and Learn"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#234C6A]/90 to-[#1B3C53]/70" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
-                  <h2 className="text-3xl sm:text-5xl font-bold mb-4">
-                    Teach What You Love
-                  </h2>
-                  <p className="text-lg md:text-xl text-white/90 max-w-2xl">
-                    Share your passion and make a difference in someone's learning journey
-                  </p>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0F172A]/95 via-[#1B3C53]/85 to-[#234C6A]/70" />
+                
+                <div className="absolute inset-0 opacity-20">
+                  <div className="absolute top-20 left-10 w-32 h-32 bg-amber-400 rounded-full blur-3xl" />
+                  <div className="absolute bottom-20 right-10 w-40 h-40 bg-orange-500 rounded-full blur-3xl" />
+                </div>
+
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 md:px-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                  >
+                    <span className="inline-block bg-amber-400/20 text-amber-300 text-sm font-bold px-4 py-2 rounded-full mb-6 border border-amber-400/40">
+                      💡 Share Your Passion
+                    </span>
+                  </motion.div>
+
+                  <motion.h1 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight"
+                  >
+                    Teach What <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-300 to-amber-200">
+                      You Love
+                    </span>
+                  </motion.h1>
+                  
+                  <motion.p 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    className="text-lg md:text-xl text-white/90 max-w-3xl mb-8 leading-relaxed"
+                  >
+                    Share your expertise and make a real difference in someone's learning journey. Build your teaching profile and impact lives.
+                  </motion.p>
+
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.5 }}
+                    className="flex flex-col sm:flex-row gap-4 justify-center"
+                  >
+                    <Link 
+                      to="/add-skill"
+                      className="bg-gradient-to-r from-amber-400 to-orange-500 text-[#0F172A] font-bold px-8 py-4 rounded-lg hover:shadow-lg hover:shadow-amber-400/50 transition-all duration-300 transform hover:scale-105 text-center"
+                    >
+                      List Your Skills
+                    </Link>
+                    <Link 
+                      to="/"
+                      className="bg-white/10 border-2 border-white/30 text-white font-bold px-8 py-4 rounded-lg hover:bg-white/20 hover:border-white/50 transition-all duration-300 text-center backdrop-blur-sm"
+                    >
+                      Discover More
+                    </Link>
+                  </motion.div>
                 </div>
               </div>
             </SwiperSlide>
